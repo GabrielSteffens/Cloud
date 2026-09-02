@@ -155,7 +155,7 @@ export const TopicComparison: React.FC<TopicComparisonProps> = ({ topics, onOpen
                     {entry.platformName.charAt(0)}
                   </div>
                   <button
-                    onClick={() => onOpenVendorHub(entry.platformId)}
+                    onClick={() => handleCardClick(entry.platformId)}
                     className="min-w-0 text-left group/platform flex-1"
                   >
                     <div className="font-bold text-heading text-sm truncate group-hover/platform:text-cyan-400 transition-colors flex items-center gap-1.5">
