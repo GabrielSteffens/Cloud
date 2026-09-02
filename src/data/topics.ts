@@ -224,6 +224,83 @@ export const getTopics = (lang: 'en' | 'pt'): TopicDefinition[] => {
       ]
     },
     {
+      id: 'auth-config',
+      title: isPt ? 'Configurações de Autenticação (Auth Config)' : 'Authentication Configuration (Auth Config)',
+      description: isPt
+        ? 'Como cada plataforma configura os métodos de autenticação ativos, aplica regras de acesso aos SSIDs e vincula dispositivos autorizados ao portal captivo.'
+        : 'How each platform configures active authentication methods, applies access rules to SSIDs, and binds authorized devices to the captive portal.',
+      iconName: 'ShieldCheck',
+      platforms: [
+        {
+          platformId: 'yunlink',
+          platformName: 'Yunlink',
+          vendor: 'CloudNetlot / Ruike Technology',
+          logoColor: '#2563eb',
+          available: true,
+          screenshotUrl: '/yunlink_deep_02_auth_config_1788351322680.png',
+          navigationPath: 'ruike-cloud.com → Project → Config → Auth → Auth Config',
+          summary: isPt
+            ? 'A tela "Auth Config" é o painel central de controle dos métodos de autenticação do portal captivo. Permite ativar/desativar individualmente os métodos (One Click habilitado, Member desabilitado), configurar a página de autenticação (Auth page, Strategy, Language) e aplicar as regras a SSIDs específicos via modal "Auth Rules". Também gerencia dispositivos autorizados vinculados ao portal. ⚠️ Não existe configuração de gateway SMS: o método SMS aparece como opção no portal, mas não existe nenhuma tela de configuração de provedor/gateway SMS no painel.'
+            : 'The "Auth Config" screen is the central control panel for captive portal authentication methods. It allows toggling individual methods on/off (One Click enabled, Member disabled), configuring the auth page (Auth page, Strategy, Language), and applying rules to specific SSIDs via the "Auth Rules" modal. It also manages authorized devices bound to the portal. ⚠️ No SMS gateway configuration exists: SMS appears as a method option in the portal, but there is no SMS provider/gateway configuration screen anywhere in the panel.',
+          configOptions: isPt
+            ? [
+                '📌 Seção: Config auth methods — Métodos de Autenticação Disponíveis:',
+                '• One Click (1-Clique): Toggle habilitado (azul). Ativação direta sem configuração adicional. Exibe ícone de cartão/acesso rápido.',
+                '• Member (Membros): Toggle desabilitado (cinza). Login com credenciais de usuários cadastrados. Exibe ícone de usuário.',
+                '⚠️ SMS: Ausente na tela Auth Config. O método SMS aparece no portal como opção, mas NÃO existe tela de configuração de gateway/provedor SMS no painel da plataforma.',
+                '---',
+                '📌 Seção: Auth page config — Configuração da Página de Autenticação:',
+                '• Auth page: Dropdown para selecionar qual página/template do portal será exibido (valor padrão: "Default").',
+                '• Strategy: Dropdown para vincular uma estratégia de acesso (validade, white/black list). Exibe "please select" quando nenhuma está vinculada.',
+                '• Language: Dropdown de idioma da página de autenticação (valor exibido: "English").',
+                '• Botão Save: Salva as configurações de Auth page config.',
+                '---',
+                '📌 Botão Auth Range → Modal "Auth Rules" — Aplicação por SSID:',
+                '• O botão "Auth Range" no topo da tela abre o modal "Auth Rules".',
+                '• Auth Range: Lista de checkboxes com todos os SSIDs do projeto disponíveis para vinculação. Confirmados no ambiente auditado: wireless, SSID1, SSID2, test1017.',
+                '• Funcionamento: Ao marcar um SSID, a configuração de autenticação (Auth Config) passa a ser aplicada naquele SSID. Permite controle granular por rede sem fio.',
+                '• Botão OK confirma a seleção; X fecha sem salvar.',
+                '---',
+                '📌 Botão Auth Device → Modal "Auth Device" — Dispositivos Autorizados:',
+                '• O botão "Auth Device 0 Units" no topo abre o modal "Auth Device".',
+                '• Abas disponíveis: "Add Devices" (para vincular novos dispositivos) e "Auth Device 0 Units" (lista de dispositivos já vinculados).',
+                '• Tabela de dispositivos: Colunas = Device serial number, Name, Type, IP, MAC, Config.',
+                '• Estado vazio: Exibe ilustração de roteador Wi-Fi com a mensagem "Please select the button in the upper left corner to add the device".',
+                '• Propósito: Permite registrar dispositivos específicos como autorizados no contexto do portal captivo — possivelmente para whitelist baseada em hardware (ex: APs, gateways específicos que aplicam o portal). Funcionalidade ainda em investigação, sem dispositivos vinculados no ambiente auditado (Total 0).',
+                '• Botão Delete All: Remove todos os vínculos de configuração de auth do projeto.',
+              ]
+            : [
+                '📌 Section: Config auth methods — Available Authentication Methods:',
+                '• One Click: Toggle enabled (blue). Direct activation with no additional configuration required. Displays a card/quick-access icon.',
+                '• Member: Toggle disabled (grey). Login with credentials of registered users. Displays a user icon.',
+                '⚠️ SMS: Absent from the Auth Config screen. The SMS method appears as an option in the portal, but there is NO SMS gateway/provider configuration screen anywhere in the platform panel.',
+                '---',
+                '📌 Section: Auth page config — Auth Page Configuration:',
+                '• Auth page: Dropdown to select which portal page/template is displayed to guests (default value: "Default").',
+                '• Strategy: Dropdown to link an access strategy (validity period, white/black lists). Shows "please select" when none is linked.',
+                '• Language: Dropdown for the auth page display language (shown value: "English").',
+                '• Save button: Saves the Auth page config settings.',
+                '---',
+                '📌 Auth Range Button → "Auth Rules" Modal — SSID Assignment:',
+                '• The "Auth Range" button at the top opens the "Auth Rules" modal.',
+                '• Auth Range: A checklist of all SSIDs in the project available for binding. Confirmed in audited environment: wireless, SSID1, SSID2, test1017.',
+                '• Behavior: Checking an SSID applies the current Auth Config to that wireless network. Enables granular per-SSID authentication control.',
+                '• OK button confirms selection; X closes without saving.',
+                '---',
+                '📌 Auth Device Button → "Auth Device" Modal — Authorized Devices:',
+                '• The "Auth Device 0 Units" button at the top opens the "Auth Device" modal.',
+                '• Available tabs: "Add Devices" (bind new devices) and "Auth Device 0 Units" (list of already-bound devices).',
+                '• Device table columns: Device serial number, Name, Type, IP, MAC, Config.',
+                '• Empty state: Displays a Wi-Fi router illustration with the message "Please select the button in the upper left corner to add the device".',
+                '• Purpose: Allows registering specific devices as authorized within the captive portal context — likely for hardware-based whitelisting (e.g., specific APs or gateways that enforce the portal). Feature still under investigation; no devices bound in the audited environment (Total 0).',
+                '• Delete All button: Removes all auth configuration bindings from the project.',
+              ]
+        },
+        ...pendingOtherVendors({ pt: 'Configurações de Autenticação (Auth Config)', en: 'Authentication Configuration (Auth Config)' })
+      ]
+    },
+    {
+
       id: 'monitoring-observability',
       title: isPt ? 'Monitoramento, Dashboards e Observabilidade' : 'Monitoring, Dashboards & Observability',
       description: isPt

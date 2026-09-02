@@ -4,11 +4,11 @@ import { VENDORS } from '../data/vendors';
 import { useLanguage } from '../i18n/LanguageContext';
 import {
   Columns3, DoorOpen, ArrowLeft, CheckCircle2, Clock, ImageOff, ChevronRight,
-  UserCog, Boxes, Wifi, Router, Network, Activity, Bell, RefreshCw, Plug, Wallet
+  UserCog, Boxes, Wifi, Router, Network, Activity, Bell, RefreshCw, Plug, Wallet, ShieldCheck
 } from 'lucide-react';
 
 const TOPIC_ICONS: Record<string, React.FC<{ className?: string }>> = {
-  DoorOpen, UserCog, Boxes, Wifi, Router, Network, Activity, Bell, RefreshCw, Plug, Wallet
+  DoorOpen, UserCog, Boxes, Wifi, Router, Network, Activity, Bell, RefreshCw, Plug, Wallet, ShieldCheck
 };
 
 interface VendorTopicsHubProps {
