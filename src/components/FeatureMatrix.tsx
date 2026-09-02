@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Platform, FeatureCategory } from '../types/platform';
 import { EvidenceBadge, SupportStatusBadge } from './EvidenceBadge';
 import { useLanguage } from '../i18n/LanguageContext';
+import { translateFeatureCategory } from '../i18n/featureCategoryLabels';
 import { Search, BarChart3, Info, X } from 'lucide-react';
 
 interface FeatureMatrixProps {
@@ -9,7 +10,7 @@ interface FeatureMatrixProps {
 }
 
 export const FeatureMatrix: React.FC<FeatureMatrixProps> = ({ platforms }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
@@ -53,7 +54,7 @@ export const FeatureMatrix: React.FC<FeatureMatrixProps> = ({ platforms }) => {
           </div>
 
           {/* Search Input Bar */}
-          <div className="relative min-w-[280px]">
+          <div className="relative min-w-[320px]">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 transform -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
@@ -65,7 +66,7 @@ export const FeatureMatrix: React.FC<FeatureMatrixProps> = ({ platforms }) => {
             {searchTerm && (
               <button 
                 onClick={() => setSearchTerm('')} 
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-heading"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -79,13 +80,11 @@ export const FeatureMatrix: React.FC<FeatureMatrixProps> = ({ platforms }) => {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                selectedCategory === cat
-                  ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 shadow-sm'
-                  : 'bg-slate-900/60 text-slate-400 hover:text-slate-200 border border-slate-800'
+              className={`chip px-3 py-1.5 rounded text-xs font-medium border ${
+                selectedCategory === cat ? 'chip-active' : ''
               }`}
             >
-              {cat}
+              {translateFeatureCategory(cat, language)}
             </button>
           ))}
         </div>
@@ -96,11 +95,11 @@ export const FeatureMatrix: React.FC<FeatureMatrixProps> = ({ platforms }) => {
             <table className="tech-table">
               <thead>
                 <tr>
-                  <th className="w-1/3">{t('matrix.featureColumn')}</th>
+                  <th className="min-w-[240px]">{t('matrix.featureColumn')}</th>
                   {platforms.map(p => (
-                    <th key={p.id} className="text-center font-bold text-white">
+                    <th key={p.id} className="text-center font-bold text-heading w-44">
                       <div className="flex items-center justify-center gap-2">
-                        <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: p.logoColor }} />
+                        <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: p.logoColor }} />
                         {p.name}
                       </div>
                     </th>
@@ -117,15 +116,15 @@ export const FeatureMatrix: React.FC<FeatureMatrixProps> = ({ platforms }) => {
                 ) : (
                   filteredRows.map((row, idx) => (
                     <React.Fragment key={idx}>
-                      <tr className="hover:bg-slate-900/40 transition-colors">
+                      <tr>
                         
                         {/* Feature Name & Description Column */}
                         <td>
                           <div className="flex items-start gap-2">
                             <div>
-                              <div className="font-bold text-white text-xs sm:text-sm">{row.name}</div>
+                              <div className="font-bold text-heading text-xs sm:text-sm">{row.name}</div>
                               <div className="text-[11px] text-slate-400 line-clamp-1">{row.description}</div>
-                              <span className="badge badge-dim text-[10px] mt-1">{row.category}</span>
+                              <span className="badge badge-dim text-[10px] mt-1">{translateFeatureCategory(row.category, language)}</span>
                             </div>
                           </div>
                         </td>
@@ -137,7 +136,7 @@ export const FeatureMatrix: React.FC<FeatureMatrixProps> = ({ platforms }) => {
                           const evidenceBadge = featureMatch ? featureMatch.evidenceBadge : 'not_verified';
 
                           return (
-                            <td key={p.id} className="text-center">
+                            <td key={p.id} className="text-center w-44">
                               <div className="flex flex-col items-center justify-center gap-1">
                                 <SupportStatusBadge status={status} />
                                 {featureMatch && (
@@ -158,9 +157,9 @@ export const FeatureMatrix: React.FC<FeatureMatrixProps> = ({ platforms }) => {
         </div>
 
         {/* Legend Ribbon */}
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl bg-slate-950/60 border border-slate-900 text-xs text-slate-400">
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-4 p-4 rounded bg-slate-900 border border-slate-800 text-xs text-slate-400">
           <div className="flex items-center gap-4">
-            <span className="font-bold text-white font-mono">STATUS:</span>
+            <span className="font-semibold text-heading">{t('matrix.statusLabel')}</span>
             <span className="text-emerald-400">{t('status.supported')}</span>
             <span className="text-red-400">{t('status.notSupported')}</span>
             <span className="text-amber-400">{t('status.partial')}</span>
@@ -168,7 +167,7 @@ export const FeatureMatrix: React.FC<FeatureMatrixProps> = ({ platforms }) => {
           </div>
           <div className="flex items-center gap-2 text-cyan-400">
             <Info className="w-4 h-4" />
-            <span>Verificado com evidências capturadas na interface ao vivo.</span>
+            <span>{t('matrix.verifiedNote')}</span>
           </div>
         </div>
 

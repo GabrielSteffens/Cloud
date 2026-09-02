@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { getPlatforms, getPlatformById } from './data/platforms';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
+import { TopicDraftsProvider, useTopicDraftsContext } from './context/TopicDraftsContext';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ExecutiveSummary } from './components/ExecutiveSummary';
@@ -10,19 +11,30 @@ import { FeatureMatrix } from './components/FeatureMatrix';
 import { HeadToHead } from './components/HeadToHead';
 import { ScreenshotGallery } from './components/ScreenshotGallery';
 import { UseCaseExplorer } from './components/UseCaseExplorer';
+import { TopicComparison } from './components/TopicComparison';
+import { VendorTopicsHub } from './components/VendorTopicsHub';
+import { TopicEntryEditor } from './components/TopicEntryEditor';
+import { NewTopicModal } from './components/NewTopicModal';
+import { ExportDataModal } from './components/ExportDataModal';
 import { PlatformDeepDive } from './components/PlatformDeepDive';
 import { Footer } from './components/Footer';
 
 function MainContent() {
   const { language } = useLanguage();
+  const { addTopic, getMergedTopics, exportData } = useTopicDraftsContext();
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [selectedPlatformId, setSelectedPlatformId] = useState<string | null>(null);
+  const [vendorHubPlatformId, setVendorHubPlatformId] = useState<string | null>(null);
+  const [topicEditTarget, setTopicEditTarget] = useState<{ topicId: string; platformId: string } | null>(null);
+  const [showNewTopicModal, setShowNewTopicModal] = useState(false);
+  const [showExportModal, setShowExportModal] = useState(false);
 
   const platforms = getPlatforms(language);
+  const topics = getMergedTopics(language);
   const selectedPlatform = selectedPlatformId ? getPlatformById(selectedPlatformId, language) : null;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-black">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-[#00A335] selection:text-white">
       
       {/* Navigation Header */}
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -68,14 +80,55 @@ function MainContent() {
           <UseCaseExplorer platforms={platforms} onSelectPlatform={setSelectedPlatformId} />
         )}
 
+        {/* TAB 7: TOPIC COMPARISON */}
+        {activeTab === 'topics' && (
+          topicEditTarget ? (
+            <TopicEntryEditor
+              topicId={topicEditTarget.topicId}
+              platformId={topicEditTarget.platformId}
+              onBack={() => setTopicEditTarget(null)}
+            />
+          ) : vendorHubPlatformId ? (
+            <VendorTopicsHub
+              platformId={vendorHubPlatformId}
+              topics={topics}
+              onBack={() => setVendorHubPlatformId(null)}
+              onEditTopic={(topicId) => setTopicEditTarget({ topicId, platformId: vendorHubPlatformId })}
+            />
+          ) : (
+            <TopicComparison
+              topics={topics}
+              onOpenVendorHub={setVendorHubPlatformId}
+              onAddTopic={() => setShowNewTopicModal(true)}
+              onExport={() => setShowExportModal(true)}
+            />
+          )
+        )}
+
       </main>
 
       {/* Platform Deep Dive Modal Drawer */}
       {selectedPlatform && (
-        <PlatformDeepDive 
-          platform={selectedPlatform} 
-          onClose={() => setSelectedPlatformId(null)} 
+        <PlatformDeepDive
+          platform={selectedPlatform}
+          onClose={() => setSelectedPlatformId(null)}
         />
+      )}
+
+      {/* New Macro Topic Modal */}
+      {showNewTopicModal && (
+        <NewTopicModal
+          onClose={() => setShowNewTopicModal(false)}
+          onCreate={(titlePt, titleEn, descriptionPt, descriptionEn, iconName) => {
+            addTopic({ pt: titlePt, en: titleEn }, { pt: descriptionPt, en: descriptionEn }, iconName);
+            setShowNewTopicModal(false);
+          }}
+        />
+      )}
+
+      {/* Export Draft Data Modal */}
+      {showExportModal && (
+        <ExportDataModal data={exportData()} onClose={() => setShowExportModal(false)} />
       )}
 
       {/* Footer */}
@@ -88,7 +141,9 @@ function MainContent() {
 export function App() {
   return (
     <LanguageProvider>
-      <MainContent />
+      <TopicDraftsProvider>
+        <MainContent />
+      </TopicDraftsProvider>
     </LanguageProvider>
   );
 }

@@ -51,44 +51,40 @@ export const UseCaseExplorer: React.FC<UseCaseExplorerProps> = ({ platforms, onS
         </div>
 
         {/* Scenario Selection Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 mb-8">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-3 mb-8">
           {scenarios.map(sc => {
             const isSelected = selectedScenarioId === sc.id;
             return (
               <button
                 key={sc.id}
                 onClick={() => setSelectedScenarioId(sc.id)}
-                className={`p-3 rounded-xl text-center transition-all flex flex-col items-center justify-center gap-2 border ${
-                  isSelected
-                    ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/40 shadow-md shadow-cyan-500/10'
-                    : 'bg-slate-900/60 text-slate-400 hover:bg-slate-900 border-slate-800 hover:text-white'
+                className={`chip p-3 rounded text-center transition-all flex flex-col items-center justify-center gap-2 border ${
+                  isSelected ? 'chip-active' : ''
                 }`}
               >
-                <div className={`p-2 rounded-lg ${isSelected ? 'bg-cyan-500/20 text-cyan-400' : 'bg-slate-800 text-slate-400'}`}>
-                  <Compass className="w-4 h-4" />
-                </div>
-                <span className="text-[11px] font-bold leading-tight">{sc.title.split(' (')[0]}</span>
+                <Compass className="w-4 h-4" />
+                <span className="text-[11px] font-semibold leading-tight">{sc.title.split(' (')[0]}</span>
               </button>
             );
           })}
         </div>
 
         {/* Current Scenario Card Banner */}
-        <div className="glass-card p-6 mb-8 border-cyan-500/30">
+        <div className="glass-card p-6 mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
             <div>
               <span className="badge badge-cyan text-xs mb-2">{t('useCase.specification')}</span>
-              <h3 className="text-xl font-black text-white">{currentScenario.title}</h3>
+              <h3 className="text-xl font-bold text-heading">{currentScenario.title}</h3>
               <p className="text-xs text-slate-300 mt-1">{currentScenario.subtitle}</p>
             </div>
           </div>
-          
-          <p className="text-xs text-slate-300 leading-relaxed mb-4 bg-slate-950/50 p-3.5 rounded-xl border border-slate-900">
+
+          <p className="text-xs text-slate-400 leading-relaxed mb-4 bg-slate-900 p-3.5 rounded border border-slate-800">
             {currentScenario.description}
           </p>
 
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-mono text-slate-400">{t('useCase.keyRequirements')}</span>
+            <span className="text-xs font-medium text-slate-400">{t('useCase.keyRequirements')}</span>
             {currentScenario.keyRequirements.map((req, idx) => (
               <span key={idx} className="badge badge-purple text-[10px]">
                 <ShieldCheck className="w-3 h-3 text-purple-400" />
@@ -99,26 +95,26 @@ export const UseCaseExplorer: React.FC<UseCaseExplorerProps> = ({ platforms, onS
         </div>
 
         {/* Platform Recommendations Ranking */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           {scenarioRankings.map((item, idx) => (
-            <div 
+            <div
               key={item.platform.id}
-              className={`glass-card p-6 flex flex-col justify-between relative overflow-hidden border-l-4 ${
-                idx === 0 ? 'border-l-emerald-400 bg-slate-900/90 shadow-lg shadow-emerald-500/10' : 'border-l-slate-700'
-              }`}
+              className={`glass-card p-6 flex flex-col justify-between relative overflow-hidden border-l-4 w-full ${
+                scenarioRankings.length > 1 ? 'sm:grow sm:shrink sm:basis-[300px] sm:max-w-xl' : 'max-w-3xl'
+              } ${idx === 0 ? 'border-l-emerald-400' : 'border-l-transparent'}`}
             >
               <div>
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div 
-                      className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-white text-sm"
+                      className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-white text-sm"
                       style={{ backgroundColor: item.platform.logoColor }}
                     >
                       {item.platform.name.charAt(0)}
                     </div>
                     <div>
-                      <h4 className="text-base font-extrabold text-white">{item.platform.name}</h4>
+                      <h4 className="text-base font-extrabold text-heading">{item.platform.name}</h4>
                       <p className="text-xs text-slate-400">{item.platform.vendor}</p>
                     </div>
                   </div>
@@ -129,20 +125,20 @@ export const UseCaseExplorer: React.FC<UseCaseExplorerProps> = ({ platforms, onS
                     }`}>
                       {item.match.suitabilityRating === 'Ideal' ? (language === 'pt' ? 'Escolha Ideal' : 'Ideal Choice') : (language === 'pt' ? 'Recomendado' : 'Suitable Choice')}
                     </span>
-                    <div className="text-xs font-mono font-bold text-slate-400 mt-1">
-                      Score: <strong className="text-emerald-400 text-sm font-black">{item.match.suitabilityScore.toFixed(1)}</strong> / 10
+                    <div className="text-xs font-semibold text-slate-400 mt-1">
+                      Score: <strong className="font-mono text-cyan-400 text-sm font-bold">{item.match.suitabilityScore.toFixed(1)}</strong> / 10
                     </div>
                   </div>
                 </div>
 
                 {/* Rationale */}
-                <p className="text-xs text-slate-300 leading-relaxed mb-4 bg-slate-950/60 p-3 rounded-lg border border-slate-900">
+                <p className="text-xs text-slate-400 leading-relaxed mb-4 bg-slate-900 p-3 rounded border border-slate-800">
                   {item.match.rationale}
                 </p>
 
                 {/* Key Advantages */}
                 <div className="space-y-2 mb-4">
-                  <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider block font-bold">{t('useCase.scenarioDrivers')}</span>
+                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide block">{t('useCase.scenarioDrivers')}</span>
                   {item.match.keyFeatures.map((kf, kIdx) => (
                     <div key={kIdx} className="flex items-center gap-2 text-xs text-slate-300">
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
@@ -164,7 +160,7 @@ export const UseCaseExplorer: React.FC<UseCaseExplorerProps> = ({ platforms, onS
               {/* Action Button */}
               <button
                 onClick={() => onSelectPlatform(item.platform.id)}
-                className="mt-6 w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-bold text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 transition-all"
+                className="btn btn-secondary w-full mt-6 text-xs"
               >
                 {t('useCase.inspectDetails')}
                 <ArrowRight className="w-4 h-4" />

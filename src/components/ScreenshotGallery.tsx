@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Platform, ScreenshotItem } from '../types/platform';
 import { EvidenceBadge } from './EvidenceBadge';
 import { useLanguage } from '../i18n/LanguageContext';
+import { translateFeatureCategory } from '../i18n/featureCategoryLabels';
 import { Image as ImageIcon, Maximize2, X, CheckCircle2 } from 'lucide-react';
 
 interface ScreenshotGalleryProps {
@@ -9,7 +10,7 @@ interface ScreenshotGalleryProps {
 }
 
 export const ScreenshotGallery: React.FC<ScreenshotGalleryProps> = ({ platforms }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [selectedPlatformId, setSelectedPlatformId] = useState<string>('All');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [activeModalShot, setActiveModalShot] = useState<{ shot: ScreenshotItem; platformName: string; logoColor: string } | null>(null);
@@ -52,13 +53,11 @@ export const ScreenshotGallery: React.FC<ScreenshotGalleryProps> = ({ platforms 
 
           {/* Platform Filters */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-mono text-slate-400">{t('gallery.platformLabel')}</span>
+            <span className="text-xs font-medium text-slate-400">{t('gallery.platformLabel')}</span>
             <button
               onClick={() => setSelectedPlatformId('All')}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                selectedPlatformId === 'All'
-                  ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/40'
-                  : 'bg-slate-900/60 text-slate-400 border border-slate-800'
+              className={`chip px-3 py-1 rounded text-xs font-medium border ${
+                selectedPlatformId === 'All' ? 'chip-active' : ''
               }`}
             >
               {t('gallery.allPlatforms')}
@@ -67,10 +66,8 @@ export const ScreenshotGallery: React.FC<ScreenshotGalleryProps> = ({ platforms 
               <button
                 key={p.id}
                 onClick={() => setSelectedPlatformId(p.id)}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                  selectedPlatformId === p.id
-                    ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/40'
-                    : 'bg-slate-900/60 text-slate-400 border border-slate-800'
+                className={`chip px-3 py-1 rounded text-xs font-medium border ${
+                  selectedPlatformId === p.id ? 'chip-active' : ''
                 }`}
               >
                 {p.name}
@@ -85,23 +82,23 @@ export const ScreenshotGallery: React.FC<ScreenshotGalleryProps> = ({ platforms 
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                selectedCategory === cat
-                  ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40'
-                  : 'bg-slate-900/60 text-slate-400 hover:text-slate-200 border border-slate-800'
+              className={`chip px-3 py-1.5 rounded text-xs font-medium border ${
+                selectedCategory === cat ? 'chip-active' : ''
               }`}
             >
-              {cat}
+              {translateFeatureCategory(cat, language)}
             </button>
           ))}
         </div>
 
         {/* Screenshot Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           {filteredShots.map((item, idx) => (
-            <div 
+            <div
               key={idx}
-              className="glass-card glass-card-interactive overflow-hidden flex flex-col justify-between group"
+              className={`glass-card glass-card-interactive overflow-hidden flex flex-col justify-between group w-full ${
+                filteredShots.length > 1 ? 'sm:grow sm:shrink sm:basis-[300px] sm:max-w-xl' : 'max-w-3xl'
+              }`}
             >
               <div>
                 {/* Image Container with Hover Zoom */}
@@ -124,17 +121,17 @@ export const ScreenshotGallery: React.FC<ScreenshotGalleryProps> = ({ platforms 
                     >
                       {item.platformName}
                     </span>
-                    <span className="badge badge-dim text-[10px]">{item.shot.category}</span>
+                    <span className="badge badge-dim text-[10px]">{translateFeatureCategory(item.shot.category, language)}</span>
                   </div>
 
-                  <div className="absolute bottom-3 right-3 p-2 rounded-lg bg-slate-900/80 text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute bottom-3 right-3 p-2 rounded-lg bg-[rgba(0,0,0,0.6)] text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
                     <Maximize2 className="w-4 h-4" />
                   </div>
                 </div>
 
                 {/* Content Details */}
                 <div className="p-5">
-                  <h3 className="text-sm font-extrabold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+                  <h3 className="text-sm font-extrabold text-heading mb-2 group-hover:text-cyan-400 transition-colors">
                     {item.shot.title}
                   </h3>
 
@@ -147,7 +144,7 @@ export const ScreenshotGallery: React.FC<ScreenshotGalleryProps> = ({ platforms 
 
                   {/* Observed Capabilities */}
                   <div className="space-y-1 mb-3">
-                    <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">{t('gallery.observedControls')}</span>
+                    <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide block">{t('gallery.observedControls')}</span>
                     {item.shot.observedCapabilities.map((cap, cIdx) => (
                       <div key={cIdx} className="flex items-center gap-1.5 text-[11px] text-slate-300">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
@@ -181,7 +178,7 @@ export const ScreenshotGallery: React.FC<ScreenshotGalleryProps> = ({ platforms 
               
               <button 
                 onClick={() => setActiveModalShot(null)}
-                className="absolute top-4 right-4 p-2 rounded-lg bg-slate-900 text-slate-400 hover:text-white border border-slate-800"
+                className="absolute top-4 right-4 p-2 rounded-lg bg-slate-900 text-slate-400 hover:text-heading border border-slate-800"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -193,7 +190,7 @@ export const ScreenshotGallery: React.FC<ScreenshotGalleryProps> = ({ platforms 
                 >
                   {activeModalShot.platformName}
                 </span>
-                <h3 className="text-lg font-black text-white">{activeModalShot.shot.title}</h3>
+                <h3 className="text-lg font-bold text-heading">{activeModalShot.shot.title}</h3>
               </div>
 
               {/* Full Image */}
@@ -207,20 +204,20 @@ export const ScreenshotGallery: React.FC<ScreenshotGalleryProps> = ({ platforms 
 
               {/* Metadata */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
-                  <span className="font-mono text-cyan-400 font-bold block mb-1 uppercase">{t('gallery.navigationPath')}</span>
+                <div className="bg-slate-900 p-4 rounded border border-slate-800">
+                  <span className="font-semibold text-heading block mb-1 uppercase tracking-wide">{t('gallery.navigationPath')}</span>
                   <div className="nav-path text-xs mb-3">{activeModalShot.shot.navigationPath}</div>
-                  
-                  <span className="font-mono text-emerald-400 font-bold block mb-1 uppercase">{t('gallery.uiStrengths')}</span>
-                  <p className="text-slate-300 leading-relaxed mb-3">{activeModalShot.shot.strength}</p>
+
+                  <span className="font-semibold text-heading block mb-1 uppercase tracking-wide">{t('gallery.uiStrengths')}</span>
+                  <p className="text-slate-400 leading-relaxed mb-3">{activeModalShot.shot.strength}</p>
                 </div>
 
-                <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
-                  <span className="font-mono text-amber-400 font-bold block mb-1 uppercase">{t('gallery.observedLimitation')}</span>
-                  <p className="text-slate-300 leading-relaxed mb-3">{activeModalShot.shot.weakness}</p>
-                  
-                  <span className="font-mono text-purple-400 font-bold block mb-1 uppercase">{t('gallery.observedControls')}</span>
-                  <ul className="list-disc list-inside space-y-1 text-slate-300">
+                <div className="bg-slate-900 p-4 rounded border border-slate-800">
+                  <span className="font-semibold text-heading block mb-1 uppercase tracking-wide">{t('gallery.observedLimitation')}</span>
+                  <p className="text-slate-400 leading-relaxed mb-3">{activeModalShot.shot.weakness}</p>
+
+                  <span className="font-semibold text-heading block mb-1 uppercase tracking-wide">{t('gallery.observedControls')}</span>
+                  <ul className="list-disc list-inside space-y-1 text-slate-400">
                     {activeModalShot.shot.observedCapabilities.map((cap, idx) => (
                       <li key={idx}>{cap}</li>
                     ))}

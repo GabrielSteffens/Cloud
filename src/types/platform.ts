@@ -120,7 +120,55 @@ export interface CategoryDefinition {
   iconName: string;
 }
 
-export type ScenarioType = 
+export interface TopicPlatformEntry {
+  platformId: string;
+  platformName: string;
+  vendor: string;
+  logoColor: string;
+  available: boolean;
+  screenshotUrl?: string;
+  navigationPath?: string;
+  summary?: string;
+  configOptions?: string[];
+  unavailableNote?: string;
+}
+
+export interface TopicDefinition {
+  id: string;
+  title: string;
+  description: string;
+  iconName: string;
+  platforms: TopicPlatformEntry[];
+}
+
+export interface LocalizedText {
+  pt: string;
+  en: string;
+}
+
+/** Draft content for one (topic, vendor) pair, edited via the Topic
+ * Comparison screen and kept in localStorage until there is a backend
+ * to persist it for every visitor. */
+export interface TopicEntryDraft {
+  available: boolean;
+  screenshotUrl?: string;
+  navigationPath?: string;
+  summary?: LocalizedText;
+  configOptions?: { pt: string[]; en: string[] };
+  unavailableNote?: LocalizedText;
+  updatedAt: string;
+}
+
+/** A macro topic created from the UI rather than hardcoded in topics.ts. */
+export interface CustomTopicDraft {
+  id: string;
+  title: LocalizedText;
+  description: LocalizedText;
+  iconName: string;
+  createdAt: string;
+}
+
+export type ScenarioType =
   | 'smb'
   | 'enterprise'
   | 'msp'

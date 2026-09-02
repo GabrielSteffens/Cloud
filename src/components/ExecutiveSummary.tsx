@@ -25,24 +25,18 @@ export const ExecutiveSummary: React.FC<ExecutiveSummaryProps> = ({ platforms, o
               {t('summary.title')}
             </h2>
             <p className="section-subtitle">
-              {t('summary.subtitle')}
+              {platforms.length < 2 ? t('summary.subtitleSingle') : t('summary.subtitle')}
             </p>
           </div>
         </div>
 
         {/* Dynamic Rankings Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">
           {rankings.map((rank, idx) => (
-            <div 
-              key={idx} 
-              className="glass-card glass-card-interactive p-6 flex flex-col justify-between relative overflow-hidden group"
+            <div
+              key={idx}
+              className="glass-card glass-card-interactive p-6 flex flex-col justify-between relative overflow-hidden group w-full max-w-xl"
             >
-              {/* Card top accent line */}
-              <div 
-                className="absolute top-0 left-0 right-0 h-1" 
-                style={{ backgroundColor: rank.platform.logoColor }}
-              />
-
               <div>
                 {/* Header */}
                 <div className="flex items-center justify-between mb-3">
@@ -50,12 +44,12 @@ export const ExecutiveSummary: React.FC<ExecutiveSummaryProps> = ({ platforms, o
                     <Award className="w-3.5 h-3.5" />
                     {rank.badge}
                   </span>
-                  <span className="font-mono text-sm font-bold text-slate-400">
-                    Score: <strong className="text-emerald-400 font-extrabold">{rank.score.toFixed(1)}</strong> / 10
+                  <span className="text-sm font-semibold text-slate-400">
+                    Score: <strong className="font-mono text-cyan-400 font-bold">{rank.score.toFixed(1)}</strong> / 10
                   </span>
                 </div>
 
-                <h3 className="text-lg font-extrabold text-white group-hover:text-cyan-400 transition-colors">
+                <h3 className="text-lg font-extrabold text-heading group-hover:text-cyan-400 transition-colors">
                   {rank.title}
                 </h3>
                 <p className="text-xs text-slate-400 mt-1 mb-4">{rank.subtitle}</p>
@@ -70,7 +64,7 @@ export const ExecutiveSummary: React.FC<ExecutiveSummaryProps> = ({ platforms, o
                       {rank.platform.name.charAt(0)}
                     </div>
                     <div>
-                      <div className="font-bold text-white text-sm">{rank.platform.name}</div>
+                      <div className="font-bold text-heading text-sm">{rank.platform.name}</div>
                       <div className="text-xs text-slate-400">{rank.platform.vendor}</div>
                     </div>
                   </div>
@@ -86,7 +80,7 @@ export const ExecutiveSummary: React.FC<ExecutiveSummaryProps> = ({ platforms, o
               {/* Action Button */}
               <button
                 onClick={() => onSelectPlatform(rank.platform.id)}
-                className="mt-5 w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-bold text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 transition-all"
+                className="btn btn-secondary w-full mt-5 text-xs"
               >
                 {t('summary.inspectDeepDive')}
                 <ChevronRight className="w-4 h-4" />

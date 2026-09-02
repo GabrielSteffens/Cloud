@@ -37,41 +37,48 @@ export const HeadToHead: React.FC<HeadToHeadProps> = ({ platforms }) => {
               {t('h2h.title')}
             </h2>
             <p className="section-subtitle">
-              {t('h2h.subtitle')}
+              {platforms.length < 2 ? t('h2h.subtitleSingle') : t('h2h.subtitle')}
             </p>
           </div>
 
           {/* Platform Selector Pills */}
+          {platforms.length > 1 && (
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-mono text-slate-400 mr-2">{t('h2h.compareLabel')}</span>
+            <span className="text-xs font-medium text-slate-400 mr-2">{t('h2h.compareLabel')}</span>
             {platforms.map(p => {
               const isSelected = selectedIds.includes(p.id);
               return (
                 <button
                   key={p.id}
                   onClick={() => togglePlatform(p.id)}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${
-                    isSelected
-                      ? 'bg-cyan-500/20 text-cyan-400 border-cyan-500/40 shadow-sm'
-                      : 'bg-slate-900/60 text-slate-400 border-slate-800 hover:text-white'
+                  className={`chip flex items-center gap-2 px-3 py-1.5 rounded text-xs font-medium border ${
+                    isSelected ? 'chip-active' : ''
                   }`}
                 >
-                  <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: p.logoColor }} />
+                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: p.logoColor }} />
                   {p.name}
-                  {isSelected ? <Check className="w-3.5 h-3.5 text-cyan-400" /> : <span className="text-slate-600">+</span>}
+                  {isSelected ? <Check className="w-3.5 h-3.5" /> : <span>+</span>}
                 </button>
               );
             })}
           </div>
+          )}
         </div>
 
+        {selectedPlatforms.length < 2 && (
+          <div className="mb-6 p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300 leading-relaxed">
+            {t('h2h.singlePlatformNote')}
+          </div>
+        )}
+
         {/* Head-to-Head Comparison Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           {selectedPlatforms.map(platform => (
-            <div 
+            <div
               key={platform.id}
-              className="glass-card p-6 flex flex-col justify-between relative overflow-hidden border-t-4"
-              style={{ borderTopColor: platform.logoColor }}
+              className={`glass-card p-6 flex flex-col justify-between relative overflow-hidden w-full ${
+                selectedPlatforms.length > 1 ? 'sm:grow sm:shrink sm:basis-[260px] sm:max-w-xl' : 'max-w-3xl'
+              }`}
             >
               <div>
                 {/* Header */}
@@ -83,50 +90,50 @@ export const HeadToHead: React.FC<HeadToHeadProps> = ({ platforms }) => {
                     {platform.name.charAt(0)}
                   </div>
                   <div>
-                    <h3 className="text-lg font-black text-white">{platform.name}</h3>
+                    <h3 className="text-lg font-bold text-heading">{platform.name}</h3>
                     <p className="text-xs text-slate-400">{platform.vendor}</p>
                   </div>
                 </div>
 
                 {/* Score Pill */}
-                <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 flex items-center justify-between mb-6">
-                  <span className="text-xs font-mono text-slate-400">{t('h2h.overallRating')}</span>
-                  <span className="font-mono font-black text-emerald-400 text-lg">
+                <div className="p-2.5 rounded bg-slate-900 border border-slate-800 flex items-center justify-between mb-6">
+                  <span className="text-xs font-medium text-slate-400">{t('h2h.overallRating')}</span>
+                  <span className="font-mono font-bold text-cyan-400 text-lg">
                     {platform.overallScore.toFixed(1)} <span className="text-xs text-slate-500 font-normal">/ 10</span>
                   </span>
                 </div>
 
                 {/* Comparison Attributes */}
-                <div className="space-y-4 text-xs">
-                  
+                <div className="space-y-3 text-xs">
+
                   {/* Architecture */}
-                  <div className="bg-slate-950/60 p-3 rounded-lg border border-slate-900">
-                    <span className="font-mono font-bold text-cyan-400 block mb-1 uppercase">{t('h2h.deploymentModel')}</span>
-                    <p className="text-slate-300 leading-relaxed">{platform.architecture.deploymentModel}</p>
+                  <div className="border-b border-slate-800 pb-3">
+                    <span className="font-semibold text-heading block mb-1 uppercase tracking-wide text-[11px]">{t('h2h.deploymentModel')}</span>
+                    <p className="text-slate-400 leading-relaxed">{platform.architecture.deploymentModel}</p>
                   </div>
 
                   {/* Multi-Tenancy */}
-                  <div className="bg-slate-950/60 p-3 rounded-lg border border-slate-900">
-                    <span className="font-mono font-bold text-purple-400 block mb-1 uppercase">{t('h2h.multiTenancy')}</span>
-                    <p className="text-slate-300 leading-relaxed">{platform.architecture.multiTenancy}</p>
+                  <div className="border-b border-slate-800 pb-3">
+                    <span className="font-semibold text-heading block mb-1 uppercase tracking-wide text-[11px]">{t('h2h.multiTenancy')}</span>
+                    <p className="text-slate-400 leading-relaxed">{platform.architecture.multiTenancy}</p>
                   </div>
 
                   {/* Adoption Workflow */}
-                  <div className="bg-slate-950/60 p-3 rounded-lg border border-slate-900">
-                    <span className="font-mono font-bold text-emerald-400 block mb-1 uppercase">{t('h2h.adoptionWorkflow')}</span>
-                    <p className="text-slate-300 leading-relaxed">{platform.architecture.adoptionWorkflow}</p>
+                  <div className="border-b border-slate-800 pb-3">
+                    <span className="font-semibold text-heading block mb-1 uppercase tracking-wide text-[11px]">{t('h2h.adoptionWorkflow')}</span>
+                    <p className="text-slate-400 leading-relaxed">{platform.architecture.adoptionWorkflow}</p>
                   </div>
 
                   {/* API Support */}
-                  <div className="bg-slate-950/60 p-3 rounded-lg border border-slate-900">
-                    <span className="font-mono font-bold text-amber-400 block mb-1 uppercase">{t('h2h.apiSupport')}</span>
-                    <p className="text-slate-300 leading-relaxed">{platform.architecture.apiSupport}</p>
+                  <div className="border-b border-slate-800 pb-3">
+                    <span className="font-semibold text-heading block mb-1 uppercase tracking-wide text-[11px]">{t('h2h.apiSupport')}</span>
+                    <p className="text-slate-400 leading-relaxed">{platform.architecture.apiSupport}</p>
                   </div>
 
                   {/* Licensing Model */}
-                  <div className="bg-slate-950/60 p-3 rounded-lg border border-slate-900">
-                    <span className="font-mono font-bold text-pink-400 block mb-1 uppercase">{t('h2h.licensingStructure')}</span>
-                    <p className="text-slate-300 leading-relaxed">{platform.licensing.pricingType}</p>
+                  <div>
+                    <span className="font-semibold text-heading block mb-1 uppercase tracking-wide text-[11px]">{t('h2h.licensingStructure')}</span>
+                    <p className="text-slate-400 leading-relaxed">{platform.licensing.pricingType}</p>
                   </div>
 
                 </div>
@@ -134,7 +141,7 @@ export const HeadToHead: React.FC<HeadToHeadProps> = ({ platforms }) => {
               </div>
 
               {/* Target Verdict */}
-              <div className="mt-6 pt-4 border-t border-slate-800 text-[11px] text-slate-300 bg-slate-900/50 p-3 rounded-lg italic">
+              <div className="mt-6 pt-4 border-t border-slate-800 text-[11px] text-slate-400 italic">
                 "{platform.verdict}"
               </div>
 

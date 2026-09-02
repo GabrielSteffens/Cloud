@@ -29,18 +29,14 @@ export const PlatformOverviewCards: React.FC<PlatformOverviewCardsProps> = ({ pl
         </div>
 
         {/* Platforms Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="flex flex-wrap justify-center gap-6">
           {platforms.map((platform) => (
-            <div 
+            <div
               key={platform.id}
-              className="glass-card glass-card-interactive p-6 flex flex-col justify-between relative overflow-hidden group"
+              className={`glass-card glass-card-interactive p-6 flex flex-col justify-between relative overflow-hidden group w-full ${
+                platforms.length > 1 ? 'sm:grow sm:shrink sm:basis-[300px] sm:max-w-xl' : 'max-w-3xl'
+              }`}
             >
-              {/* Header color accent */}
-              <div 
-                className="absolute top-0 left-0 right-0 h-1.5" 
-                style={{ backgroundColor: platform.logoColor }}
-              />
-
               <div>
                 {/* Platform Badge & Title */}
                 <div className="flex items-start justify-between mb-4">
@@ -52,7 +48,7 @@ export const PlatformOverviewCards: React.FC<PlatformOverviewCardsProps> = ({ pl
                       {platform.name.charAt(0)}
                     </div>
                     <div>
-                      <h3 className="text-xl font-black text-white group-hover:text-cyan-400 transition-colors">
+                      <h3 className="text-xl font-bold text-heading group-hover:text-cyan-400 transition-colors">
                         {platform.name}
                       </h3>
                       <p className="text-xs font-semibold text-slate-400">{platform.vendor}</p>
@@ -61,15 +57,15 @@ export const PlatformOverviewCards: React.FC<PlatformOverviewCardsProps> = ({ pl
 
                   {/* Overall Score Badge */}
                   <div className="text-right">
-                    <div className="text-xs text-slate-400 font-mono uppercase">{t('overview.overallScore')}</div>
-                    <div className="text-2xl font-black font-mono text-emerald-400">
+                    <div className="text-xs text-slate-400 uppercase tracking-wide">{t('overview.overallScore')}</div>
+                    <div className="text-2xl font-bold font-mono text-cyan-400">
                       {platform.overallScore.toFixed(1)} <span className="text-xs text-slate-500 font-normal">/ 10</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Tagline */}
-                <p className="text-xs text-cyan-300 font-mono bg-cyan-950/30 p-2.5 rounded-lg border border-cyan-500/20 mb-4">
+                <p className="text-xs text-slate-500 italic mb-4">
                   "{platform.tagline}"
                 </p>
 
@@ -80,7 +76,7 @@ export const PlatformOverviewCards: React.FC<PlatformOverviewCardsProps> = ({ pl
 
                 {/* Ecosystem Tags */}
                 <div className="mb-5">
-                  <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block mb-2">{t('overview.supportedEcosystem')}</span>
+                  <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide block mb-2">{t('overview.supportedEcosystem')}</span>
                   <div className="flex flex-wrap gap-1.5">
                     {platform.ecosystem.map((device, dIdx) => (
                       <span key={dIdx} className="badge badge-dim text-[10px]">
@@ -92,7 +88,7 @@ export const PlatformOverviewCards: React.FC<PlatformOverviewCardsProps> = ({ pl
                 </div>
 
                 {/* Strengths & Weaknesses Split */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 items-start">
                   {/* Strengths */}
                   <div className="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
                     <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-400 mb-2">
@@ -142,7 +138,7 @@ export const PlatformOverviewCards: React.FC<PlatformOverviewCardsProps> = ({ pl
                   href={platform.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-400 hover:text-white transition-colors"
+                  className="p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-400 hover:text-heading transition-colors"
                   title="Link Oficial da Nuvem"
                 >
                   <ExternalLink className="w-4 h-4" />
