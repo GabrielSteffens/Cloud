@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TopicDefinition } from '../types/platform';
 import { useLanguage } from '../i18n/LanguageContext';
-import { Columns3, DoorOpen, MapPin, CheckCircle2, Clock, ImageOff, Plus, Download, Pencil } from 'lucide-react';
+import { Columns3, DoorOpen, MapPin, CheckCircle2, Clock, ImageOff, Plus, Download, Pencil, Eye, ExternalLink } from 'lucide-react';
 
 const TOPIC_ICONS: Record<string, React.FC<{ className?: string }>> = {
   DoorOpen
@@ -10,19 +10,29 @@ const TOPIC_ICONS: Record<string, React.FC<{ className?: string }>> = {
 interface TopicComparisonProps {
   topics: TopicDefinition[];
   onOpenVendorHub: (platformId: string) => void;
+  onSelectTopicEntry?: (topicId: string, platformId: string) => void;
   onAddTopic: () => void;
   onExport: () => void;
 }
 
-export const TopicComparison: React.FC<TopicComparisonProps> = ({ topics, onOpenVendorHub, onAddTopic, onExport }) => {
+export const TopicComparison: React.FC<TopicComparisonProps> = ({ topics, onOpenVendorHub, onSelectTopicEntry, onAddTopic, onExport }) => {
   const { t } = useLanguage();
   const [activeTopicId, setActiveTopicId] = useState<string>(topics[0]?.id ?? '');
+  const [entryViewMode, setEntryViewMode] = useState<Record<string, 'mobile' | 'desktop'>>({});
 
   const activeTopic = topics.find(topic => topic.id === activeTopicId) ?? topics[0];
 
   if (!activeTopic) {
     return null;
   }
+
+  const handleCardClick = (platformId: string) => {
+    if (onSelectTopicEntry) {
+      onSelectTopicEntry(activeTopic.id, platformId);
+    } else {
+      onOpenVendorHub(platformId);
+    }
+  };
 
   const TopicIcon = TOPIC_ICONS[activeTopic.iconName] || Columns3;
 
@@ -89,61 +99,104 @@ export const TopicComparison: React.FC<TopicComparisonProps> = ({ topics, onOpen
 
         {/* Platform Comparison Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {activeTopic.platforms.map(entry => (
-            <div key={entry.platformId} className="glass-card overflow-hidden flex flex-col">
+          {activeTopic.platforms.map(entry => {
+            const currentViewMode = entryViewMode[entry.platformId] || 'mobile';
+            const activeShotUrl = (entry.screenshots
+              ? (currentViewMode === 'desktop' ? entry.screenshots.desktop : entry.screenshots.mobile)
+              : undefined) || entry.screenshotUrl;
 
-              {/* Platform Header */}
-              <div className="p-4 border-b border-slate-800 flex items-center gap-3">
-                <div
-                  className="w-9 h-9 rounded flex items-center justify-center font-bold text-white text-sm shrink-0"
-                  style={{ backgroundColor: entry.logoColor }}
-                >
-                  {entry.platformName.charAt(0)}
-                </div>
-                <button
-                  onClick={() => onOpenVendorHub(entry.platformId)}
-                  className="min-w-0 text-left group/platform"
-                >
-                  <div className="font-bold text-heading text-sm truncate group-hover/platform:text-cyan-400 transition-colors">{entry.platformName}</div>
-                  <div className="text-[11px] text-slate-500 truncate">{entry.vendor}</div>
-                </button>
-                {entry.available ? (
-                  <span className="badge badge-emerald text-[10px] ml-auto shrink-0">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    {t('badge.verifiedUI')}
-                  </span>
-                ) : (
-                  <span className="badge badge-dim text-[10px] ml-auto shrink-0">
-                    <Clock className="w-3.5 h-3.5" />
-                    {t('topics.comingSoon')}
-                  </span>
-                )}
-              </div>
+            return (
+              <div key={entry.platformId} className="glass-card overflow-hidden flex flex-col">
 
-              {entry.available ? (
-                <div className="p-4 flex flex-col gap-3 flex-1">
-
-                  {/* Screenshot or pending placeholder */}
-                  {entry.screenshotUrl ? (
-                    <img
-                      src={entry.screenshotUrl}
-                      alt={entry.platformName}
-                      className="w-full aspect-video object-cover rounded border border-slate-800"
-                    />
+                {/* Platform Header */}
+                <div className="p-4 border-b border-slate-800 flex items-center gap-3">
+                  <div
+                    className="w-9 h-9 rounded flex items-center justify-center font-bold text-white text-sm shrink-0"
+                    style={{ backgroundColor: entry.logoColor }}
+                  >
+                    {entry.platformName.charAt(0)}
+                  </div>
+                  <button
+                    onClick={() => handleCardClick(entry.platformId)}
+                    className="min-w-0 text-left group/platform flex-1"
+                  >
+                    <div className="font-bold text-heading text-sm truncate group-hover/platform:text-cyan-400 transition-colors flex items-center gap-1.5">
+                      {entry.platformName}
+                      <ExternalLink className="w-3 h-3 text-slate-500 group-hover/platform:text-cyan-400 transition-colors" />
+                    </div>
+                    <div className="text-[11px] text-slate-500 truncate">{entry.vendor}</div>
+                  </button>
+                  {entry.available ? (
+                    <span className="badge badge-emerald text-[10px] ml-auto shrink-0">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      {t('badge.verifiedUI')}
+                    </span>
                   ) : (
-                    <div className="w-full aspect-video rounded border border-dashed border-slate-700 bg-slate-900 flex flex-col items-center justify-center gap-1.5 text-center px-3">
-                      <ImageOff className="w-5 h-5 text-slate-500" />
-                      <span className="text-[11px] font-semibold text-slate-400">{t('topics.screenshotPending')}</span>
-                      <span className="text-[10px] text-slate-500 leading-snug">{t('topics.screenshotPendingNote')}</span>
-                    </div>
+                    <span className="badge badge-dim text-[10px] ml-auto shrink-0">
+                      <Clock className="w-3.5 h-3.5" />
+                      {t('topics.comingSoon')}
+                    </span>
                   )}
+                </div>
 
-                  {entry.navigationPath && (
-                    <div className="nav-path text-[11px] truncate" title={entry.navigationPath}>
-                      <MapPin className="w-3 h-3 shrink-0 inline -mt-0.5 mr-1" />
-                      {entry.navigationPath}
-                    </div>
-                  )}
+                {entry.available ? (
+                  <div className="p-4 flex flex-col gap-3 flex-1">
+
+                    {/* Screenshot view selector if multiple views exist */}
+                    {entry.screenshots?.mobile && entry.screenshots?.desktop && (
+                      <div className="flex items-center justify-between mb-0.5">
+                        <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">
+                          Modo Preview ({currentViewMode === 'mobile' ? 'Mobile' : 'Desktop'})
+                        </span>
+                        <div className="flex items-center gap-1 bg-slate-900/80 p-0.5 rounded border border-slate-800">
+                          <button
+                            type="button"
+                            onClick={() => setEntryViewMode(prev => ({ ...prev, [entry.platformId]: 'mobile' }))}
+                            className={`px-2 py-0.5 rounded text-[10px] font-medium transition-all ${
+                              currentViewMode === 'mobile'
+                                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                                : 'text-slate-400 hover:text-slate-200'
+                            }`}
+                          >
+                            📱 Mobile
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setEntryViewMode(prev => ({ ...prev, [entry.platformId]: 'desktop' }))}
+                            className={`px-2 py-0.5 rounded text-[10px] font-medium transition-all ${
+                              currentViewMode === 'desktop'
+                                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                                : 'text-slate-400 hover:text-slate-200'
+                            }`}
+                          >
+                            💻 Desktop
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Screenshot or pending placeholder */}
+                    {activeShotUrl ? (
+                      <img
+                        src={activeShotUrl}
+                        alt={`${entry.platformName} ${currentViewMode}`}
+                        className="w-full aspect-video object-cover rounded border border-slate-800 cursor-pointer hover:opacity-95 transition-opacity"
+                        onClick={() => handleCardClick(entry.platformId)}
+                      />
+                    ) : (
+                      <div className="w-full aspect-video rounded border border-dashed border-slate-700 bg-slate-900 flex flex-col items-center justify-center gap-1.5 text-center px-3">
+                        <ImageOff className="w-5 h-5 text-slate-500" />
+                        <span className="text-[11px] font-semibold text-slate-400">{t('topics.screenshotPending')}</span>
+                        <span className="text-[10px] text-slate-500 leading-snug">{t('topics.screenshotPendingNote')}</span>
+                      </div>
+                    )}
+
+                    {entry.navigationPath && (
+                      <div className="nav-path text-[11px] truncate" title={entry.navigationPath}>
+                        <MapPin className="w-3 h-3 shrink-0 inline -mt-0.5 mr-1" />
+                        {entry.navigationPath}
+                      </div>
+                    )}
 
                   {entry.summary && (
                     <p className="text-[12px] text-slate-400 leading-relaxed">{entry.summary}</p>
@@ -164,6 +217,15 @@ export const TopicComparison: React.FC<TopicComparisonProps> = ({ topics, onOpen
                       </div>
                     </div>
                   )}
+
+                  <button
+                    type="button"
+                    onClick={() => handleCardClick(entry.platformId)}
+                    className="w-full mt-2 py-2 px-3 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all group/btn shadow-sm"
+                  >
+                    <Eye className="w-4 h-4 text-cyan-400" />
+                    Ver Tela Detalhada ({entry.platformName})
+                  </button>
                 </div>
               ) : (
                 <div className="p-4 flex-1 flex flex-col items-center justify-center text-center gap-2 min-h-[200px]">
@@ -173,7 +235,8 @@ export const TopicComparison: React.FC<TopicComparisonProps> = ({ topics, onOpen
               )}
 
             </div>
-          ))}
+          );
+        })}
         </div>
 
         <p className="text-[11px] text-slate-500 mt-6 text-center">{t('topics.moreTopicsSoon')}</p>

@@ -244,6 +244,34 @@ export const getYunlinkCloud = (lang: 'en' | 'pt'): Platform => {
         strength: isPt ? 'Trilha completa de auditoria registrando picos de limites de hardware.' : 'Comprehensive event trail logging hardware CPU/Memory threshold spikes.',
         weakness: isPt ? 'O formato de exportação de log é apenas em CSV.' : 'Export log format is CSV only.',
         evidenceStatus: 'verified_ui'
+      },
+      {
+        id: 'yun-shot-9',
+        title: isPt ? 'Editor de Portal Captivo Interno — Layout Mobile' : 'Internal Captive Portal Editor — Mobile Layout',
+        category: 'Security',
+        section: 'Portal Config',
+        navigationPath: 'ruike-cloud.com → Project 1 → Config → Auth → Portal (Mobile Tab)',
+        imageUrl: '/yunlink_portal_mobile.png',
+        observedCapabilities: isPt
+          ? ['Preview mobile em tempo real', 'Configuração de carrossel de 3 banners (1170x1020px, máx 200KB)', 'Autenticação One Click, SMS e Member', 'Redirecionamento pós-login e Cor do Tema']
+          : ['Real-time mobile preview', '3-banner carousel setup (1170x1020px, max 200KB)', 'One Click, SMS and Member auth methods', 'Post-login redirect URL & Theme color picker'],
+        strength: isPt ? 'Visualizador móvel interativo com editor de 3 banners carrossel e múltiplos métodos de login.' : 'Interactive mobile previewer with 3-banner carousel editor and multiple auth methods.',
+        weakness: isPt ? 'Não possui opção para imagem estática única sem rotação em carrossel.' : 'Lacks option for a single fixed static image without carousel rotation.',
+        evidenceStatus: 'verified_ui'
+      },
+      {
+        id: 'yun-shot-10',
+        title: isPt ? 'Editor de Portal Captivo Interno — Layout Desktop' : 'Internal Captive Portal Editor — Desktop Layout',
+        category: 'Security',
+        section: 'Portal Config',
+        navigationPath: 'ruike-cloud.com → Project 1 → Config → Auth → Portal (Desktop Tab)',
+        imageUrl: '/yunlink_portal_desktop.png',
+        observedCapabilities: isPt
+          ? ['Preview desktop em tempo real', 'Configuração de carrossel de 3 banners (1920x500px, máx 200KB)', 'Autenticação One Click, SMS e Member', 'Redirecionamento pós-login e Cor do Tema']
+          : ['Real-time desktop preview', '3-banner carousel setup (1920x500px, max 200KB)', 'One Click, SMS and Member auth methods', 'Post-login redirect URL & Theme color picker'],
+        strength: isPt ? 'Visualização limpa para telas widescreen desktop com exatamente as mesmas opções do layout mobile.' : 'Clean widescreen desktop view matching identical configuration options from mobile.',
+        weakness: isPt ? 'Banner desktop exige ajuste de proporção específico (1920x500px).' : 'Desktop banner requires specific wide ratio adjustment (1920x500px).',
+        evidenceStatus: 'verified_ui'
       }
     ],
 

@@ -98,7 +98,8 @@ function MainContent() {
           ) : (
             <TopicComparison
               topics={topics}
-              onOpenVendorHub={setVendorHubPlatformId}
+              onOpenVendorHub={(platformId) => setTopicEditTarget({ topicId: topics[0]?.id ?? 'captive-portal', platformId })}
+              onSelectTopicEntry={(topicId, platformId) => setTopicEditTarget({ topicId, platformId })}
               onAddTopic={() => setShowNewTopicModal(true)}
               onExport={() => setShowExportModal(true)}
             />
