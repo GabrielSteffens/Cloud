@@ -4,12 +4,9 @@ import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 import { TopicDraftsProvider, useTopicDraftsContext } from './context/TopicDraftsContext';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
-import { ExecutiveSummary } from './components/ExecutiveSummary';
 import { PlatformOverviewCards } from './components/PlatformOverviewCards';
-import { CapabilityRadar } from './components/CapabilityRadar';
 import { FeatureMatrix } from './components/FeatureMatrix';
 import { ScreenshotGallery } from './components/ScreenshotGallery';
-import { UseCaseExplorer } from './components/UseCaseExplorer';
 import { TopicComparison } from './components/TopicComparison';
 import { VendorTopicsHub } from './components/VendorTopicsHub';
 import { TopicEntryEditor } from './components/TopicEntryEditor';
@@ -25,8 +22,8 @@ function MainContent() {
   const [selectedPlatformId, setSelectedPlatformId] = useState<string | null>(null);
   const [vendorHubPlatformId, setVendorHubPlatformId] = useState<string | null>(null);
   const [topicEditTarget, setTopicEditTarget] = useState<{ topicId: string; platformId: string } | null>(null);
-  const [showNewTopicModal, setShowNewTopicModal] = useState(false);
-  const [showExportModal, setShowExportModal] = useState(false);
+  const [showNewTopicModal, setShowNewTopicModal] = useState<boolean>(false);
+  const [showExportModal, setShowExportModal] = useState<boolean>(false);
 
   const platforms = getPlatforms(language);
   const topics = getMergedTopics(language);
@@ -46,12 +43,7 @@ function MainContent() {
         
         {/* TAB 1: OVERVIEW */}
         {activeTab === 'overview' && (
-          <>
-            <ExecutiveSummary platforms={platforms} onSelectPlatform={setSelectedPlatformId} />
-            <PlatformOverviewCards platforms={platforms} onSelectPlatform={setSelectedPlatformId} />
-            <CapabilityRadar platforms={platforms} />
-            <UseCaseExplorer platforms={platforms} onSelectPlatform={setSelectedPlatformId} />
-          </>
+          <PlatformOverviewCards platforms={platforms} onSelectPlatform={setSelectedPlatformId} />
         )}
 
         {/* TAB 2: FEATURE MATRIX */}
