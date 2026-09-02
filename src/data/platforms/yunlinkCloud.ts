@@ -6,27 +6,27 @@ export const getYunlinkCloud = (lang: 'en' | 'pt'): Platform => {
   return {
     id: 'yunlink',
     name: 'Yunlink',
-    vendor: 'YunNetlot / Ruike Technology',
+    vendor: 'CloudNetlot / Ruike Technology',
     logoColor: '#2563eb',
     url: 'https://ruike-cloud.com',
     tagline: isPt 
-      ? 'Plataforma de Gerenciamento em Nuvem de Controladora Wi-Fi, SD-WAN e Frota de Pontes Sem Fio (CPE)' 
-      : 'Cloud Controller, SD-WAN & Wireless Bridge Fleet Management Platform',
+      ? 'Plataforma Inteligente de Gerenciamento de Dispositivos em Nuvem — Wi-Fi, SD-WAN, CPE e Roteadores' 
+      : 'Intelligent Cloud Device Management Platform — Wi-Fi, SD-WAN, CPE & Wireless Routers',
     targetMarket: isPt
-      ? 'MSPs, Wi-Fi Corporativo, Gateways SD-WAN, Espaços Comerciais, Pontes Sem Fio Outdoor (CPE)'
-      : 'MSPs, Enterprise Wi-Fi, SD-WAN Gateways, Commercial Spaces, Wireless Bridges (CPE)',
+      ? 'MSPs, Wi-Fi Corporativo, Gateways SD-WAN, Espaços Comerciais com Portal Captivo, Frotas de CPE Outdoor'
+      : 'MSPs, Enterprise Wi-Fi, SD-WAN Gateways, Commercial Venues with Captive Portal, Outdoor CPE Fleets',
     ecosystem: [
-      'Wi-Fi 6 APs (WB5AX, WB2FM)', 
-      'SD-WAN Gateways (LTE-F300, Q3000, R3000)', 
-      'CPE Wireless Bridges (WB5FM)', 
-      'Managed Switches', 
-      'Cloud Routers'
+      'Wi-Fi 6 APs (AX835, WB5AX, WB2FM)',
+      'SD-WAN Gateways (LTE-F300, Q3000, R3000)',
+      'CPE Wireless Bridges (WB5FM)',
+      'Managed Switches',
+      'Wireless Routers'
     ],
     overallScore: 8.5,
-    lastEvaluated: '2026-09-01',
+    lastEvaluated: '2026-09-02',
     summary: isPt
-      ? 'O Yunlink (ruike-cloud.com) é uma plataforma corporativa de gerenciamento em nuvem projetada para arquiteturas de rede multi-tenant, roteamento SD-WAN, APs Wi-Fi de alta densidade, pontes sem fio (CPE) e portais captivos. Possui hierarquia de projetos em 3 níveis (17 projetos ativos), criptografia WPA3-SAE, mapeamento interativo de topologia e otimização automatizada de rádio.'
-      : 'Yunlink (ruike-cloud.com) is an enterprise cloud management platform designed for multi-tenant network architectures, SD-WAN routing, high-density Wi-Fi APs, wireless bridges (CPE), and captive portals. It features nested project hierarchies (17 active projects), WPA3-SAE encryption, interactive topology mapping, and automated RF tuning.',
+      ? 'O Yunlink/CloudNetlot (ruike-cloud.com) é uma plataforma corporativa de gerenciamento em nuvem com hierarquia multi-projeto em 3 níveis (14 projetos ativos, 27 dispositivos gerenciados). Suporta APs Wi-Fi 6 (modelo AX835, firmware AX835-AP-V2.0-Build20251231184154), roteamento SD-WAN, portais captivos personalizáveis, roaming inteligente com limiar de cobertura configurável (-95 dBm), Wireless Tuning com otimização automática de canal e tela NOC em tempo real.'
+      : 'Yunlink/CloudNetlot (ruike-cloud.com) is an enterprise cloud management platform with 3-tier multi-project hierarchy (14 active projects, 27 managed devices). Supports Wi-Fi 6 APs (AX835 model, firmware AX835-AP-V2.0-Build20251231184154), SD-WAN routing, customizable captive portals, intelligent roaming with configurable coverage threshold (-95 dBm), Wireless Tuning with auto channel optimization, and real-time NOC Large Screen dashboard.',
 
     scores: {
       wireless: 8.8,
@@ -56,23 +56,28 @@ export const getYunlinkCloud = (lang: 'en' | 'pt'): Platform => {
 
     strengths: [
       { 
-        title: isPt ? 'Hierarquia Multi-Tenant em 3 Níveis' : 'Nested Multi-Level Project Hierarchy', 
-        description: isPt ? 'Suporta ramificação hierárquica de projetos (Nível 1, Nível 2 e Nível 3), permitindo que MSPs deleguem controle com permissões isoladas entre 17+ projetos.' : 'Supports multi-tier project branching (Level 1, Level 2, Level 3 Orgs), enabling MSPs to delegate tenant control across 17+ projects with isolated permissions.', 
+        title: isPt ? 'Hierarquia Multi-Tenant em 3 Níveis (14 Projetos)' : 'Nested 3-Tier Multi-Tenant Project Hierarchy (14 Projects)', 
+        description: isPt ? 'Estrutura hierárquica real de projetos em 3 níveis confirmada: 14 projetos ativos gerenciando 27 dispositivos. Projetos incluem: 项目1, 项目2, 项目3, 产品部-第2级, 产品部-第3级, GX, GX-Group, GX-2, GX-3, rctest, 开发, 测试部临时测试 e outros. MSPs podem delegar controle com permissões isoladas por nível.' : 'Real 3-tier project hierarchy confirmed: 14 active projects managing 27 devices across Gateway, Switch, Router, AP and CPE categories. Projects include sub-tenants (项目2, 项目3 under 项目1). MSPs can delegate control with isolated permissions per level.', 
         impact: 'High' 
       },
       { 
-        title: isPt ? 'Criptografia WPA3-SAE & Otimização de RF' : 'WPA3-SAE & Advanced RF Tuning', 
-        description: isPt ? 'Suporta a moderna criptografia WPA3-SAE junto com largura de canal de 20/40/80MHz, short GI, roaming automático 802.11k/v/r e otimização agendada de RF.' : 'Supports modern WPA3-SAE security alongside 20/40/80MHz channel width, short GI, 802.11k/v/r auto roaming, and scheduled RF tuning.', 
+        title: isPt ? 'RF Avançado: Limiar de Cobertura -95 dBm, RTS 2347, Packet 2346' : 'Advanced RF: Coverage Threshold -95 dBm, RTS 2347, Packet 2346', 
+        description: isPt ? 'Configuração detalhada de RF por rádio confirmada no dispositivo AX835: Modo Wireless 11NG_HT20, Canal Auto, Tx Power Min, Limiar de Cobertura -95 dBm (slider), Packet Threshold 2346, RTS Threshold 2347, Max de Usuários 256, Short GI desabilitado. Wireless Tuning com otimização de canal com 1 clique.' : 'Per-device detailed RF settings confirmed on AX835: Wireless Mode 11NG_HT20, Channel Auto, Tx Power Min, Coverage Threshold slider at -95 dBm, Packet Threshold 2346, RTS Threshold 2347, Max Users per radio 256, Short GI Disabled. One-click Wireless Tuning with channel optimization.', 
         impact: 'High' 
       },
       { 
-        title: isPt ? 'Portal Captivo Integrado com Vouchers e SMS' : 'Integrated Captive Portal & Auth', 
-        description: isPt ? 'Construtor de Portal Captivo integrado com suporte a verificação por SMS, vouchers com código, login de membros, acesso com 1-clique e redirecionamento de URL.' : 'Built-in Portal Page designer supporting SMS verification, passcode vouchers, member login, One-Click access, and custom landing redirect URLs.', 
+        title: isPt ? 'Portal Captivo Multimodo com Preview Mobile/Desktop' : 'Multi-Mode Captive Portal with Mobile/Desktop Preview', 
+        description: isPt ? 'Portal captivo integrado com preview alternável entre mobile e desktop, editor de banner (1170x1020px, max 200KB, JPG/PNG), cor de tema, URL de redirecionamento, e 3 fases: Pré-Auth, Em Autenticação e Pós-Auth. Submenu: Portal, Auth Methods, Strategy, Auth Config, Auth Details.' : 'Built-in captive portal with switchable mobile/desktop preview, banner editor (1170x1020px, max 200KB, JPG/PNG), theme color, redirect URL, and 3 lifecycle stages: Before Auth, Process Auth, After Auth. Sub-menu: Portal, Auth Methods, Strategy, Auth Config, Auth Details.', 
         impact: 'High' 
       },
       { 
-        title: isPt ? 'Ecossistema Abrangente SD-WAN e Pontes CPE' : 'Broad SD-WAN & CPE Bridge Ecosystem', 
-        description: isPt ? 'Gerencia nativamente pontes sem fio outdoor (WB5FM), gateways SD-WAN (LTE-F300, Q3000, R3000), roteadores, switches e APs Wi-Fi 6 (WB5AX, WB2FM).' : 'Natively manages wireless outdoor bridges (WB5FM), SD-WAN gateways (LTE-F300, Q3000, R3000), routers, switches, and Wi-Fi 6 APs (WB5AX, WB2FM).', 
+        title: isPt ? 'NOC Large Screen — Dashboard Inteligente em Tempo Real' : 'NOC Large Screen — Real-Time Intelligent Dashboard', 
+        description: isPt ? 'Tela de monitoramento dedicada em modo escuro ("Intelligent device management platform") mostrando: distribuição por tipo de dispositivo (AP 62.96%, CPE 22.22%, Wireless Router 11.11%, Gateway 3.71%), 3 Online / 24 Offline de 27 totais, logs de configuração (17 registros hoje), terminais online (8), e log de upgrade.' : 'Dedicated dark-mode NOC screen titled "Intelligent device management platform" showing: device type distribution (AP 62.96%, CPE 22.22%, Wireless Router 11.11%, Gateway 3.71%), 3 Online / 24 Offline of 27 total, configuration logs (17 today), online terminals (8), upgrade log, and alarm display.', 
+        impact: 'High' 
+      },
+      { 
+        title: isPt ? 'Upgrade de Firmware Dual-Path: Cloud + Upload Local' : 'Dual-Path Firmware Upgrade: Cloud OTA + Local Upload', 
+        description: isPt ? 'Firmware upgrade confirmado para modelo AX835: versão atual AX835-AP-V2.0-Build20251231184154. Interface com duas abas: Cloud Upgrade (puxa da nuvem) e Local Upgrade (upload manual de binário). Suporta Batch Upgrade com seleção múltipla de dispositivos.' : 'Firmware upgrade confirmed for AX835 model: current version AX835-AP-V2.0-Build20251231184154 (Build date 2025-12-31). Two-tab interface: Cloud Upgrade (pull from cloud repo) and Local Upgrade (manual binary upload). Supports Batch Upgrade with multi-device selection.', 
         impact: 'High' 
       }
     ],
