@@ -44,12 +44,12 @@ export const getYunlinkCloud = (lang: 'en' | 'pt'): Platform => {
     scoreExplanations: [
       { category: 'wireless', score: 8.8, rationale: isPt ? 'Suporte completo a criptografia WPA3-SAE, mapeamento de VLANs multi-SSID (3-4060), largura de canal 2.4G/5G (20/40/80 MHz), roaming rápido 802.11k/v/r e limites de taxa por SSID.' : 'Full support for WPA3-SAE encryption, multi-SSID VLAN mapping (3-4060), 2.4G/5G radio channel width (20/40/80 MHz), 802.11k/v/r auto roaming, and per-SSID rate limits.' },
       { category: 'switching', score: 8.0, rationale: isPt ? 'Monitoramento do status de portas de cobre Gigabit (negociação de 1000Mbps), atributos LAN/WAN, mapeamento MAC e controle de frota de switches.' : 'Gigabit copper port status monitoring (1000Mbps negotiation), LAN/WAN attribute tags, MAC mapping, and switch fleet oversight.' },
-      { category: 'security', score: 8.3, rationale: isPt ? 'Motor de Portal Captivo com verificação via SMS, vouchers de acesso, login de membros, integração com servidor RADIUS, WPA3-SAE e isolamento de clientes L2.' : 'Rich Captive Portal engine supporting SMS verification, passcode vouchers, member login, RADIUS server integration, WPA3-SAE, and L2 client isolation.' },
+      { category: 'security', score: 8.3, rationale: isPt ? 'Motor de Portal Captivo com verificação via SMS, login de membros, acesso 1-clique, editor de banners carrossel (mobile/desktop) e WPA3-SAE.' : 'Rich Captive Portal engine supporting SMS verification, member login, 1-click access, carousel banner editor (mobile/desktop), and WPA3-SAE.' },
       { category: 'monitoring', score: 8.7, rationale: isPt ? 'Painel geral multi-projeto (17 projetos, 24 dispositivos), 749+ registros históricos de alarmes, acompanhamento de limites de memória/CPU e contadores de tempo ativo de 321 dias.' : 'Multi-project overview dashboard (17 projects, 24 devices), 749+ historical alarm records, memory & CPU threshold tracking, and 321-day uptime counters.' },
       { category: 'troubleshooting', score: 8.4, rationale: isPt ? 'Gráfico de topologia dinâmica interativa exibindo nós de gateway/switch/AP/CPE, registros de limites de CPU/memória, gavetas de status de dispositivos e controles de reinicialização.' : 'Interactive dynamic topology graph displaying gateway/switch/AP/CPE nodes, CPU/memory threshold logs, device status drawers, and reboot controls.' },
       { category: 'automation', score: 8.3, rationale: isPt ? 'Otimização agendada de RF (desligamento programado de Wi-Fi e reinicialização de dispositivos), políticas de roaming automático e agendamento de atualização de firmware.' : 'Timed optimization (scheduled Wi-Fi time off & device reboot), auto wireless roaming policies, batch project management, and version upgrade scheduling.' },
       { category: 'reporting', score: 8.1, rationale: isPt ? 'Exportação completa de eventos de alarmes em CSV, estatísticas de distribuição de dispositivos por categoria e gráficos de tráfego de clientes.' : 'Comprehensive alarm and audit event export, project device distribution stats (AP, Router, CPE, Gateway), and client traffic charts.' },
-      { category: 'integration', score: 7.9, rationale: isPt ? 'Autenticação externa RADIUS, URLs de redirecionamento de portal captivo HTTP/HTTPS e orquestração de gateways SD-WAN.' : 'External RADIUS authentication, HTTP/HTTPS captive portal redirect URLs, and SD-WAN gateway orchestration.' },
+      { category: 'integration', score: 7.9, rationale: isPt ? 'URLs de redirecionamento de portal captivo HTTP/HTTPS, gerenciamento multi-projeto em 3 níveis e orquestração de gateways SD-WAN.' : 'HTTP/HTTPS captive portal redirect URLs, 3-tier project management, and SD-WAN gateway orchestration.' },
       { category: 'ux', score: 8.6, rationale: isPt ? 'Navegação limpa no topo e na barra lateral, seletor de idioma (Inglês/Chinês na nuvem), alternador rápido de projetos e formulários modais responsivos.' : 'Clean top/side navigation layout, English language toggle, quick project switcher, modal configuration forms, and responsive design.' },
       { category: 'scalability', score: 9.0, rationale: isPt ? 'Estrutura hierárquica de projetos em 3 níveis (Nível 1, 2 e 3) gerenciando 17 projetos e frotas multi-dispositivos perfeitas para MSPs.' : 'Nested multi-level project structure (Level 1, Level 2, Level 3 org hierarchies) managing 17 projects and multi-device fleets ideal for MSP multi-tenant deployments.' }
     ],
@@ -124,7 +124,7 @@ export const getYunlinkCloud = (lang: 'en' | 'pt'): Platform => {
       { id: 'yun-4', category: 'Wireless', name: isPt ? 'Roaming Rápido & Limite de Banda' : 'Auto Roam & Rate Limiting', description: isPt ? 'Política de roaming rápido 802.11k/v/r e limitadores de velocidade (Up/Down) por SSID ou cliente.' : '802.11k/v/r fast roaming policy and per-SSID / per-client bandwidth rate limiters (Up/Down speed caps).', status: 'supported', evidenceBadge: 'verified_ui', evidenceNotes: isPt ? 'Verificado na UI: Menus Auto Roam e Wireless Limit.' : 'Verified in UI: Auto Roam & Wireless Limit menu items.', screenPath: 'Config → Intelligent → Auto Roam' },
       { id: 'yun-5', category: 'Wireless', name: isPt ? 'Otimização Agendada & Auto Reboot' : 'Timed Optimization & Auto Reboot', description: isPt ? 'Controles automáticos de manutenção: desligamento agendado do Wi-Fi e reinicialização periódica dos equipamentos.' : 'Automated maintenance controls: scheduled Wi-Fi time off and timed device reboot schedules.', status: 'supported', evidenceBadge: 'verified_ui', evidenceNotes: isPt ? 'Verificado na UI: Config → Intelligent → Timed Optimization.' : 'Verified in UI: Config → Intelligent → Timed Optimization screen.', screenPath: 'Config → Intelligent → Timed Optimization' },
       { id: 'yun-6', category: 'Switching', name: isPt ? 'Status de Portas Gigabit & Negociação' : 'Gigabit Port Status & Speed Negotiation', description: isPt ? 'Monitoramento ao vivo de portas RJ45 de cobre com exibição de negociação de velocidade a 1000Mbps.' : 'Live monitoring of RJ45 copper ports with 1000Mbps speed negotiation display.', status: 'supported', evidenceBadge: 'verified_ui', evidenceNotes: isPt ? 'Verificado na UI: Entire Network → Device List → Device Info → Tabela Port Info.' : 'Verified in UI: Entire Network → Device List → Device Info → Port Info table.', screenPath: 'Entire Network → Device List → Device Info' },
-      { id: 'yun-7', category: 'Security', name: isPt ? 'Portal Captivo & Autenticação' : 'Captive Portal & Auth Methods', description: isPt ? 'Páginas de autenticação personalizadas com SMS, vouchers com código, login de membros, 1-clique e URL de destino.' : 'Custom landing pages supporting SMS auth, passcode vouchers, member login, One-Click access, and redirect URLs.', status: 'supported', evidenceBadge: 'verified_ui', evidenceNotes: isPt ? 'Verificado na UI: Config → Auth → Portal Page & Auth Config.' : 'Verified in UI: Config → Auth → Portal Page & Auth Config screens.', screenPath: 'Config → Auth → Portal Page' },
+      { id: 'yun-7', category: 'Security', name: isPt ? 'Portal Captivo & Autenticação' : 'Captive Portal & Auth Methods', description: isPt ? 'Páginas de autenticação personalizadas com SMS, login de membros, 1-clique, carrossel de banners e URL de destino.' : 'Custom landing pages supporting SMS auth, member login, One-Click access, banner carousel, and redirect URLs.', status: 'supported', evidenceBadge: 'verified_ui', evidenceNotes: isPt ? 'Verificado na UI: Config → Auth → Portal Page & Auth Config.' : 'Verified in UI: Config → Auth → Portal Page & Auth Config screens.', screenPath: 'Config → Auth → Portal Page' },
       { id: 'yun-8', category: 'Security', name: isPt ? 'Isolamento de Clientes em Camada 2' : 'Layer 2 Client Isolation', description: isPt ? 'Bloqueio de comunicação direta entre clientes na mesma rede sem fio.' : 'Block inter-client communication on wireless networks.', status: 'supported', evidenceBadge: 'verified_ui', evidenceNotes: isPt ? 'Verificado na UI: WiFi Config → Configurações Avançadas toggle.' : 'Verified in UI: WiFi Config → Advanced Settings toggle.', screenPath: 'Config → Intelligent → WiFi Config → Advanced' },
       { id: 'yun-9', category: 'Monitoring', name: isPt ? 'Painel Geral Multi-Projeto' : 'Multi-Project Overview Dashboard', description: isPt ? 'Resumo em tempo real de projetos (17), dispositivos (24: AP 1/15, Roteador 0/3, CPE 0/6, Switch, Gateway) e clientes.' : 'Real-time summary of projects (17), devices (24: AP 1/15, Router 0/3, CPE 0/6, Switch, Gateway), and client stats.', status: 'supported', evidenceBadge: 'verified_ui', evidenceNotes: isPt ? 'Verificado na UI: Painel principal Home → Project Summary.' : 'Verified in UI: Home → Project Summary main dashboard.', screenPath: 'Home' },
       { id: 'yun-10', category: 'Troubleshooting', name: isPt ? 'Alarmes Históricos & Trilha de Auditoria' : 'Alarm & Historical Audit Trail', description: isPt ? 'Logs detalhados de eventos com acompanhamento de limites (CPU, memória, eventos online/offline: 749+ registros) e auditoria de alterações.' : 'Detailed alarm event logs with threshold tracking (CPU, memory, offline/online events: 749+ records) and Configuration Audit Log.', status: 'supported', evidenceBadge: 'verified_ui', evidenceNotes: isPt ? 'Verificado na UI: Monitor → Alarm&Log → Alarmes & Configuration Log.' : 'Verified in UI: Monitor → Alarm&Log → Alarm & Configuration Log tables.', screenPath: 'Monitor → Alarm&Log' },
@@ -271,6 +271,76 @@ export const getYunlinkCloud = (lang: 'en' | 'pt'): Platform => {
           : ['Real-time desktop preview', '3-banner carousel setup (1920x500px, max 200KB)', 'One Click, SMS and Member auth methods', 'Post-login redirect URL & Theme color picker'],
         strength: isPt ? 'Visualização limpa para telas widescreen desktop com exatamente as mesmas opções do layout mobile.' : 'Clean widescreen desktop view matching identical configuration options from mobile.',
         weakness: isPt ? 'Banner desktop exige ajuste de proporção específico (1920x500px).' : 'Desktop banner requires specific wide ratio adjustment (1920x500px).',
+        evidenceStatus: 'verified_ui'
+      },
+      {
+        id: 'yun-shot-11',
+        title: isPt ? 'Métodos de Autenticação — Tabela de Membros' : 'Auth Methods — Member Account Table',
+        category: 'Security',
+        section: 'Auth Methods',
+        navigationPath: 'ruike-cloud.com → Project 1 → Config → Auth → Auth Methods (Member Tab)',
+        imageUrl: '/yunlink_auth_methods_member_list.png',
+        observedCapabilities: isPt
+          ? ['Tabela de membros cadastrados com data/hora de criação', 'Ações de edição de senha e exclusão de conta', 'Botão Import com download de template Excel', 'Seleção e exclusão em lote (Batch Delete)']
+          : ['Registered member table with creation timestamp', 'Password edit and account delete action buttons', 'Import button with Excel template download', 'Multi-select Batch Delete option'],
+        strength: isPt ? 'Interface limpa para gestão de usuários com recurso de importação via template Excel e deleção em lote.' : 'Clean user management interface with Excel template import and batch deletion.',
+        weakness: isPt ? 'Exige exportação de formulário para cadastro em massa.' : 'Requires template export for bulk account creation.',
+        evidenceStatus: 'verified_ui'
+      },
+      {
+        id: 'yun-shot-12',
+        title: isPt ? 'Métodos de Autenticação — Modal Adicionar Membro e Regra de Senha' : 'Auth Methods — Add Member Modal & Password Rule',
+        category: 'Security',
+        section: 'Auth Methods',
+        navigationPath: 'ruike-cloud.com → Project 1 → Config → Auth → Auth Methods → Add Member',
+        imageUrl: '/yunlink_auth_methods_add_member.png',
+        observedCapabilities: isPt
+          ? ['Modal de cadastro de membro (Member Account e Login Password)', 'Validação de senha em tempo real', 'Mensagem de erro de senha: 6-20 caracteres, apenas letras, números e _-']
+          : ['Add Member modal form (Member Account & Login Password)', 'Real-time password policy validation', 'Password validation error: 6-20 characters, letters, numbers, and _- only'],
+        strength: isPt ? 'Formulário direto com validação explícita de complexidade de senha exibida via balão informativo.' : 'Direct modal form with explicit password complexity rule validation displayed via notification balloon.',
+        weakness: isPt ? 'Não suporta caracteres especiais além de sublinhado (_) e hífen (-).' : 'Does not support special characters beyond underscore (_) and hyphen (-).',
+        evidenceStatus: 'verified_ui'
+      },
+      {
+        id: 'yun-shot-13',
+        title: isPt ? 'Métodos de Autenticação — Acesso 1-Clique (Informativo)' : 'Auth Methods — One-Click Authentication (Informational)',
+        category: 'Security',
+        section: 'Auth Methods',
+        navigationPath: 'ruike-cloud.com → Project 1 → Config → Auth → Auth Methods (One Click Tab)',
+        imageUrl: '/yunlink_auth_methods_one_click.png',
+        observedCapabilities: isPt
+          ? ['Tela informativa de autenticação One-Click', 'Aviso auditado: ativado diretamente nas configurações gerais sem exigir formulário adicional']
+          : ['Informational One-Click authentication screen', 'Audited notice: enabled directly in general settings without requiring additional forms'],
+        strength: isPt ? 'Fluxo de acesso simplificado para visitantes com ativação global sem configuração individual.' : 'Streamlined guest access workflow with global toggle without individual parameters.',
+        weakness: isPt ? 'Não oferece opções de limite de tempo na tela do método.' : 'Does not expose time cap controls on the method screen itself.',
+        evidenceStatus: 'verified_ui'
+      },
+      {
+        id: 'yun-shot-14',
+        title: isPt ? 'Estratégias de Autenticação — Modal Criar Regra (White/Black List IP/MAC)' : 'Auth Strategy — Create Rule Modal (White/Black List IP/MAC)',
+        category: 'Security',
+        section: 'Strategy Management',
+        navigationPath: 'ruike-cloud.com → Project 1 → Config → Auth → Strategy → Add',
+        imageUrl: '/yunlink_auth_strategy_modal.png',
+        observedCapabilities: isPt
+          ? ['Formulário Add Strategy com campo Strategy Name', 'Seleção de White List (IP/MAC) e Black List (IP/MAC)', 'Campo de múltiplos endereços separados por vírgula (",")', 'Tabela de gerenciamento com busca e exclusão em lote (Batch Delete)']
+          : ['Add Strategy form with Strategy Name field', 'White List (IP/MAC) and Black List (IP/MAC) toggles', 'Multiple addresses entry field separated by commas (",")', 'Strategy Management table with search and Batch Delete'],
+        strength: isPt ? 'Permite definir listas de permissão e bloqueio por IP ou MAC de forma unitária e gerenciar com exclusão em massa.' : 'Allows defining IP or MAC white and black lists individually with bulk deletion capability.',
+        weakness: isPt ? 'Endereços múltiplos exigem digitação manual separada por vírgulas.' : 'Multiple addresses require manual comma-separated entry.',
+        evidenceStatus: 'verified_ui'
+      },
+      {
+        id: 'yun-shot-15',
+        title: isPt ? 'Estratégias de Autenticação — Seleção de Tempo de Validade (Validity Auth)' : 'Auth Strategy — Authentication Validity Options (Validity Auth)',
+        category: 'Security',
+        section: 'Strategy Management',
+        navigationPath: 'ruike-cloud.com → Project 1 → Config → Auth → Strategy → Add → Validity Auth',
+        imageUrl: '/yunlink_auth_strategy_validity.png',
+        observedCapabilities: isPt
+          ? ['Menu suspenso Validity Auth com opções de expiração', 'Opções auditadas: One Day, Two Day, Three Day, Four Day, Five Day, Six Day, Seven Day e Permanent']
+          : ['Validity Auth dropdown menu with expiration choices', 'Audited options: One Day, Two Day, Three Day, Four Day, Five Day, Six Day, Seven Day, and Permanent'],
+        strength: isPt ? 'Oferece controle de validade de autenticação de 1 a 7 dias ou acesso permanente de forma explícita.' : 'Offers explicit authentication validity duration cap from 1 to 7 days or permanent access.',
+        weakness: isPt ? 'Não possui opção de validade customizada por horas ou minutos.' : 'Lacks granular hourly or custom minute validity caps.',
         evidenceStatus: 'verified_ui'
       }
     ],

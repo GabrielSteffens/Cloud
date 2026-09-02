@@ -186,14 +186,38 @@ export const getTopics = (lang: 'en' | 'pt'): TopicDefinition[] => {
                 'Resoluções e Limites: Banner Mobile sugerido em 1170x1020px (máx. 200KB, JPG/PNG); Banner Desktop sugerido em 1920x500px (máx. 200KB, JPG/PNG).',
                 'Métodos de Autenticação Disponíveis: "One Click" (Acesso com 1 clique), "SMS" (Verificação via mensagem de texto) e "Member" (Login de membros/usuários cadastrados).',
                 'Parâmetros Personalizáveis: Título do Portal (Title Name), URL de redirecionamento pós-login (Guide Address, ex: https://www.baidu.com) e Seletor de Cor do Tema (Color).',
-                'Submenus da Seção Auth: Estrutura dividida em Portal, Auth Methods, Strategy, Auth Config e Auth Details.'
+                'Submenus da Seção Auth: Estrutura dividida em Portal, Auth Methods, Strategy, Auth Config e Auth Details.',
+                '---',
+                '📌 Configurações dos Métodos de Autenticação (Auth Methods):',
+                '• Gerenciamento de Membros (Aba Member): Cadastro com regra estrita de senha ("Member password can only contain letters, numbers, and _-, and must be between 6 and 20 characters"). Permite editar senha, excluir conta individualmente, importar via template Excel (.xlsx/csv) e deletar em massa (Batch Delete).',
+                '• Autenticação 1-Clique (Aba One Click): Tela informativa ("One-click authentication can be enabled by simply turning on this function in the authentication settings. No additional configuration is required."). Ativada diretamente no menu geral, sem necessidade de formulário adicional.',
+                '• ⚠️ Ausência de Configuração de Gateway SMS: Embora o método SMS seja listado no portal principal, não foi encontrada nenhuma tela ou menu de configuração de Gateway SMS / Provedor SMS no painel.',
+                '---',
+                '📌 Estratégias de Autenticação, White List & Black List (Strategy):',
+                '• Configuração de Estratégias (Strategy Name): Cadastro unitário de regras de acesso com nome customizado.',
+                '• Validade de Autenticação (Validity Auth): Opções de expiração do acesso incluindo 1 Dia (One Day), 2 Dias, 3 Dias, 4 Dias, 5 Dias, 6 Dias, 7 Dias ou Acesso Permanente (Permanent).',
+                '• Regras de White List (Lista Permitida): Filtro por IP ou MAC com suporte a múltiplos endereços separados por vírgula (",").',
+                '• Regras de Black List (Lista Bloqueada): Filtro por IP ou MAC com suporte a múltiplos endereços separados por vírgula (",").',
+                '• Gerenciamento & Exclusão em Lote (Strategy Management): Tabela com busca, adição unitária e botão Batch Delete para exclusão em massa.'
               ]
             : [
                 'Carousel Banners: Configures exactly 3 carousel banner images on the main page (Before Auth). No option available for a single fixed static image without carousel rotation.',
                 'Resolutions & Limits: Mobile banner suggested at 1170x1020px (max 200KB, JPG/PNG); Desktop banner suggested at 1920x500px (max 200KB, JPG/PNG).',
                 'Available Auth Methods: "One Click" (Direct 1-click access), "SMS" (Text verification code), and "Member" (Registered user/member login).',
                 'Customizable Parameters: Portal Title (Title Name), Post-auth redirect URL (Guide Address, e.g., https://www.baidu.com), and Accent Theme Color picker (Color).',
-                'Auth Section Sub-menus: Structured into Portal, Auth Methods, Strategy, Auth Config, and Auth Details.'
+                'Auth Section Sub-menus: Structured into Portal, Auth Methods, Strategy, Auth Config, and Auth Details.',
+                '---',
+                '📌 Authentication Methods Settings (Auth Methods):',
+                '• Member Management (Member Tab): Account creation with strict password rule ("Member password can only contain letters, numbers, and _-, and must be between 6 and 20 characters"). Supports editing passwords, individual deletion, Excel template import (.xlsx/csv), and Batch Delete.',
+                '• One-Click Authentication (One Click Tab): Informational notice screen ("One-click authentication can be enabled by simply turning on this function in the authentication settings. No additional configuration is required."). Enabled directly in general settings without additional page setup.',
+                '• ⚠️ Absence of SMS Configuration: No SMS Gateway / Provider configuration screen was found in the panel.',
+                '---',
+                '📌 Authentication Strategies, White List & Black List (Strategy):',
+                '• Strategy Configuration (Strategy Name): Individual rule creation with custom strategy naming.',
+                '• Authentication Validity (Validity Auth): Expiration controls including One Day, Two Day, Three Day, Four Day, Five Day, Six Day, Seven Day, or Permanent access.',
+                '• White List Rules (Allowed List): Selectable filter mode by IP or MAC address with multiple entry support separated by commas (",").',
+                '• Black List Rules (Blocked List): Selectable filter mode by IP or MAC address with multiple entry support separated by commas (",").',
+                '• Management & Bulk Deletion (Strategy Management): Table view with strategy name search, individual edit controls, and "Batch Delete" button for bulk rule removal.'
               ]
         },
         ...pendingOtherVendors({ pt: 'Controle de Acesso de Visitantes (Captive Portal)', en: 'Guest Access Control (Captive Portal)' })

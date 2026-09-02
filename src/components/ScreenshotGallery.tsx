@@ -4,6 +4,7 @@ import { EvidenceBadge } from './EvidenceBadge';
 import { useLanguage } from '../i18n/LanguageContext';
 import { translateFeatureCategory } from '../i18n/featureCategoryLabels';
 import { Image as ImageIcon, Maximize2, X, CheckCircle2 } from 'lucide-react';
+import { useLightbox } from '../context/LightboxContext';
 
 interface ScreenshotGalleryProps {
   platforms: Platform[];
@@ -11,6 +12,7 @@ interface ScreenshotGalleryProps {
 
 export const ScreenshotGallery: React.FC<ScreenshotGalleryProps> = ({ platforms }) => {
   const { t, language } = useLanguage();
+  const { openImage } = useLightbox();
   const [selectedPlatformId, setSelectedPlatformId] = useState<string>('All');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [activeModalShot, setActiveModalShot] = useState<{ shot: ScreenshotItem; platformName: string; logoColor: string } | null>(null);
@@ -194,12 +196,18 @@ export const ScreenshotGallery: React.FC<ScreenshotGalleryProps> = ({ platforms 
               </div>
 
               {/* Full Image */}
-              <div className="rounded-xl overflow-hidden border border-slate-800 bg-slate-950 mb-4">
+              <div 
+                className="rounded-xl overflow-hidden border border-slate-800 bg-slate-950 mb-4 cursor-zoom-in group relative"
+                onClick={() => openImage(activeModalShot.shot.imageUrl, `${activeModalShot.platformName}: ${activeModalShot.shot.title}`)}
+              >
                 <img 
                   src={activeModalShot.shot.imageUrl} 
                   alt={activeModalShot.shot.title} 
-                  className="w-full object-contain max-h-[60vh]"
+                  className="w-full object-contain max-h-[60vh] group-hover:scale-[1.01] transition-transform"
                 />
+                <div className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded border border-slate-800 text-xs text-cyan-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                  🔍 Abrir em Tela Cheia
+                </div>
               </div>
 
               {/* Metadata */}

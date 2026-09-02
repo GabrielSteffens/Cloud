@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
-import { Server, BarChart3, Image, Columns3 } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { Server, BarChart3, Image, Columns3, Sun, Moon } from 'lucide-react';
 import { APP_VERSION } from '../version';
 
 interface HeaderProps {
@@ -10,6 +11,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
   const { language, setLanguage, t } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
 
   const navItems = [
     { id: 'overview', label: t('nav.overview'), icon: Server },
@@ -47,9 +49,30 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             })}
           </nav>
 
-          {/* Version & Language Toggle */}
+          {/* Theme, Version & Language Toggle */}
           <div className="flex items-center gap-3 shrink-0">
-            <span className="text-[11px] font-mono text-[rgba(255,255,255,0.65)] whitespace-nowrap">v{APP_VERSION}</span>
+            <span className="text-[11px] font-mono opacity-70 whitespace-nowrap">v{APP_VERSION}</span>
+            
+            {/* Dark/Light Theme Switcher */}
+            <button
+              onClick={toggleTheme}
+              title={theme === 'dark' ? 'Mudar para Tema Claro' : 'Mudar para Tema Escuro (Preto)'}
+              className="p-1.5 rounded-lg bg-[rgba(255,255,255,0.12)] hover:bg-[rgba(255,255,255,0.22)] text-white transition-all flex items-center gap-1.5 text-xs font-medium"
+            >
+              {theme === 'dark' ? (
+                <>
+                  <Moon className="w-4 h-4 text-yellow-400 fill-yellow-400/20" />
+                  <span className="hidden sm:inline text-[11px]">Dark</span>
+                </>
+              ) : (
+                <>
+                  <Sun className="w-4 h-4 text-amber-500 fill-amber-500/20" />
+                  <span className="hidden sm:inline text-[11px]">Light</span>
+                </>
+              )}
+            </button>
+
+            {/* Language Switcher */}
             <div className="flex items-center gap-0.5 bg-[rgba(255,255,255,0.12)] p-0.5 rounded shrink-0">
               <button
                 onClick={() => setLanguage('pt')}

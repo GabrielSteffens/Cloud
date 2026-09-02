@@ -5,8 +5,10 @@ import { getTopics } from '../data/topics';
 import { VENDORS } from '../data/vendors';
 import { 
   ArrowLeft, Save, CheckCircle2, MapPin, Pencil, 
-  Smartphone, Monitor, ShieldCheck, Sparkles, Sliders, ImageOff 
+  Smartphone, Monitor, ShieldCheck, Sparkles, Sliders, ImageOff,
+  Users, UserPlus, MousePointerClick, AlertTriangle, Layers, Clock
 } from 'lucide-react';
+import { useLightbox } from '../context/LightboxContext';
 
 interface TopicEntryEditorProps {
   topicId: string;
@@ -14,11 +16,15 @@ interface TopicEntryEditorProps {
   onBack: () => void;
 }
 
+type ShotTab = 'mobile' | 'desktop' | 'auth-members' | 'auth-add-member' | 'auth-one-click' | 'strategy-modal' | 'strategy-validity';
+
 export const TopicEntryEditor: React.FC<TopicEntryEditorProps> = ({ topicId, platformId, onBack }) => {
   const { language, t } = useLanguage();
+  const { openImage } = useLightbox();
   const { getEntry, saveEntry, customTopics } = useTopicDraftsContext();
 
   const vendor = VENDORS.find(v => v.id === platformId);
+  const topics = getTopics(language);
 
   const baseTopicPt = getTopics('pt').find(topic => topic.id === topicId);
   const baseTopicEn = getTopics('en').find(topic => topic.id === topicId);
@@ -29,10 +35,12 @@ export const TopicEntryEditor: React.FC<TopicEntryEditorProps> = ({ topicId, pla
   const basePlatformEn = baseTopicEn?.platforms.find(p => p.platformId === platformId);
   const basePlatform = language === 'pt' ? basePlatformPt : basePlatformEn;
 
-  const existingDraft = getEntry(topicId, platformId);
+  const rawDraft = getEntry(topicId, platformId);
+  const isStale = rawDraft?.configOptions?.pt?.some(opt => opt.includes('Vouchers') || opt.includes('Isolamento') || opt.includes('RADIUS'));
+  const existingDraft = isStale ? undefined : rawDraft;
 
   const [mode, setMode] = useState<'details' | 'edit'>('details');
-  const [activeTabMode, setActiveTabMode] = useState<'mobile' | 'desktop'>('mobile');
+  const [shotView, setShotView] = useState<ShotTab>('mobile');
 
   const [available, setAvailable] = useState(existingDraft?.available ?? basePlatformPt?.available ?? false);
   const [screenshotUrl, setScreenshotUrl] = useState(existingDraft?.screenshotUrl ?? basePlatformPt?.screenshotUrl ?? '');
@@ -65,9 +73,26 @@ export const TopicEntryEditor: React.FC<TopicEntryEditorProps> = ({ topicId, pla
     ? (configPt ? splitLines(configPt) : basePlatformPt?.configOptions ?? [])
     : (configEn ? splitLines(configEn) : basePlatformEn?.configOptions ?? []);
 
-  const mobileScreenshot = basePlatformPt?.screenshots?.mobile || screenshotUrl || '/yunlink_portal_mobile.png';
-  const desktopScreenshot = basePlatformPt?.screenshots?.desktop || '/yunlink_portal_desktop.png';
-  const currentImage = activeTabMode === 'mobile' ? mobileScreenshot : desktopScreenshot;
+  const getImageDetails = (tab: ShotTab) => {
+    switch (tab) {
+      case 'mobile':
+        return { url: '/yunlink_portal_mobile.png', label: 'Portal Layout Mobile', desc: 'Mobile Preview (1170x1020px max 200KB)' };
+      case 'desktop':
+        return { url: '/yunlink_portal_desktop.png', label: 'Portal Layout Desktop', desc: 'Desktop Preview (1920x500px max 200KB)' };
+      case 'auth-members':
+        return { url: '/yunlink_auth_methods_member_list.png', label: 'Auth Methods — Lista de Membros', desc: 'Config → Auth → Auth Methods (Aba Member)' };
+      case 'auth-add-member':
+        return { url: '/yunlink_auth_methods_add_member.png', label: 'Auth Methods — Criar Membro (Validação de Senha)', desc: 'Modal Add Member (Senha: 6-20 caracteres, letras, números e _-)' };
+      case 'auth-one-click':
+        return { url: '/yunlink_auth_methods_one_click.png', label: 'Auth Methods — Acesso 1-Clique (Informativo)', desc: 'Config → Auth → Auth Methods (Aba One Click)' };
+      case 'strategy-modal':
+        return { url: '/yunlink_auth_strategy_modal.png', label: 'Strategy Management — Modal de Regras (White/Black List IP/MAC)', desc: 'Config → Auth → Strategy → Add (Tabela com Busca e Batch Delete)' };
+      case 'strategy-validity':
+        return { url: '/yunlink_auth_strategy_validity.png', label: 'Strategy Management — Tempo de Validade (Validity Auth)', desc: 'Menu Validity Auth (Opções de expiração One Day a Seven Day e Permanent)' };
+    }
+  };
+
+  const currentShot = getImageDetails(shotView);
 
   return (
     <section className="py-12 border-b border-slate-800/80">
@@ -154,78 +179,7 @@ export const TopicEntryEditor: React.FC<TopicEntryEditorProps> = ({ topicId, pla
               </div>
             )}
 
-            {/* Interactive Image Gallery Card */}
-            <div className="glass-card overflow-hidden">
-              <div className="p-4 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900/40">
-                <div className="flex items-center gap-2">
-                  <Sliders className="w-4 h-4 text-cyan-400" />
-                  <span className="text-xs font-bold text-heading uppercase tracking-wide">
-                    Capturas de Tela da Interface ao Vivo
-                  </span>
-                </div>
-
-                {/* Mobile / Desktop Toggle Tabs */}
-                <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
-                  <button
-                    onClick={() => setActiveTabMode('mobile')}
-                    className={`px-3 py-1 rounded text-xs font-medium flex items-center gap-1.5 transition-all ${
-                      activeTabMode === 'mobile'
-                        ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
-                        : 'text-slate-400 hover:text-slate-200'
-                    }`}
-                  >
-                    <Smartphone className="w-3.5 h-3.5" />
-                    Layout Mobile
-                  </button>
-                  <button
-                    onClick={() => setActiveTabMode('desktop')}
-                    className={`px-3 py-1 rounded text-xs font-medium flex items-center gap-1.5 transition-all ${
-                      activeTabMode === 'desktop'
-                        ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
-                        : 'text-slate-400 hover:text-slate-200'
-                    }`}
-                  >
-                    <Monitor className="w-3.5 h-3.5" />
-                    Layout Desktop
-                  </button>
-                </div>
-              </div>
-
-              {/* Main Screenshot Container */}
-              <div className="p-5 bg-slate-950 flex flex-col items-center justify-center">
-                {currentImage ? (
-                  <div className="relative group w-full max-w-4xl overflow-hidden rounded-xl border border-slate-800 shadow-2xl bg-slate-900">
-                    <img 
-                      src={currentImage} 
-                      alt={`Yunlink Portal ${activeTabMode}`}
-                      className="w-full h-auto object-contain max-h-[600px] transition-transform duration-300 group-hover:scale-[1.01]"
-                    />
-                    <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded border border-slate-800 text-[10px] text-slate-300 font-mono">
-                      {activeTabMode === 'mobile' ? 'Mobile Preview (1170x1020px max 200KB)' : 'Desktop Preview (1920x500px max 200KB)'}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="w-full aspect-video rounded-xl border border-dashed border-slate-700 bg-slate-900 flex flex-col items-center justify-center gap-2 text-center p-6">
-                    <ImageOff className="w-8 h-8 text-slate-500" />
-                    <span className="text-xs font-semibold text-slate-400">Captura de tela pendente</span>
-                  </div>
-                )}
-              </div>
-
-              <div className="p-4 border-t border-slate-800/80 bg-slate-900/30 flex flex-wrap items-center justify-between gap-3 text-[11px] text-slate-400">
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                  Auditado ao vivo no Yunlink CloudNetlot (ruike-cloud.com)
-                </span>
-                <span className="text-slate-500">
-                  {activeTabMode === 'mobile' 
-                    ? 'Preview dentro da moldura smartphone com abas Before Auth, Process Auth, After Auth' 
-                    : 'Preview em tela wide de computador com painel lateral de autenticação'}
-                </span>
-              </div>
-            </div>
-
-            {/* Summary & Overview Section */}
+            {/* 1. Summary & Overview Section */}
             {activeSummary && (
               <div className="glass-card p-6">
                 <h3 className="text-xs font-bold text-cyan-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
@@ -236,25 +190,378 @@ export const TopicEntryEditor: React.FC<TopicEntryEditorProps> = ({ topicId, pla
               </div>
             )}
 
-            {/* Organized Config Options & Specs */}
-            {activeConfigList.length > 0 && (
-              <div className="glass-card p-6">
-                <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wide mb-4">
-                  Recursos & Especificações Técnicas Verificadas
-                </h3>
-                <div className="flex flex-col gap-2.5">
-                  {activeConfigList.map((item, idx) => (
-                    <div 
-                      key={idx} 
-                      className="py-1.5 flex items-start gap-3 text-xs text-slate-200 leading-relaxed border-b border-slate-800/40 last:border-0"
+            {/* Partition activeConfigList into 3 sections by '---' */}
+            {(() => {
+              const configSections: string[][] = [[]];
+              for (const item of activeConfigList) {
+                if (item.trim() === '---') {
+                  configSections.push([]);
+                } else {
+                  configSections[configSections.length - 1].push(item);
+                }
+              }
+
+              const portalItems = (configSections[0] || []).filter(i => !i.startsWith('📌'));
+              const authMethodsItems = (configSections[1] || []).filter(i => !i.startsWith('📌'));
+              const strategyItems = (configSections[2] || []).filter(i => !i.startsWith('📌'));
+
+              return (
+                <>
+                  {/* ======================================================== */}
+                  {/* BLOCO 1: PORTAL CAPTIVO (LAYOUT & BANNERS TELA INICIAL) */}
+                  {/* ======================================================== */}
+                  <div className="space-y-5 pt-2">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                <div className="flex items-center gap-2">
+                  <Smartphone className="w-4 h-4 text-cyan-400" />
+                  <h3 className="text-xs font-bold text-cyan-300 uppercase tracking-wide">
+                    1. Layout & Banners do Portal Captivo (Tela Inicial)
+                  </h3>
+                </div>
+                <span className="text-[10px] text-slate-500 font-mono">Submenu: Config → Auth → Portal</span>
+              </div>
+
+              {/* IMAGEM 1: Galeria de Capturas do Portal (Mobile & Desktop) */}
+              <div className="glass-card overflow-hidden border border-cyan-500/20">
+                <div className="p-3.5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900/60">
+                  <div className="flex items-center gap-2">
+                    <Sliders className="w-4 h-4 text-cyan-400" />
+                    <span className="text-xs font-bold text-slate-200 uppercase tracking-wide">
+                      Capturas da Interface: Portal Captivo
+                    </span>
+                  </div>
+
+                  {/* Switcher Portal Mobile / Desktop */}
+                  <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
+                    <button
+                      onClick={() => setShotView('mobile')}
+                      className={`px-3 py-1 rounded text-xs font-medium flex items-center gap-1.5 transition-all ${
+                        shotView === 'mobile' || (shotView !== 'desktop' && !shotView.startsWith('auth-'))
+                          ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-semibold'
+                          : 'text-slate-400 hover:text-slate-200'
+                      }`}
                     >
+                      <Smartphone className="w-3.5 h-3.5" />
+                      Portal Mobile
+                    </button>
+
+                    <button
+                      onClick={() => setShotView('desktop')}
+                      className={`px-3 py-1 rounded text-xs font-medium flex items-center gap-1.5 transition-all ${
+                        shotView === 'desktop'
+                          ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-semibold'
+                          : 'text-slate-400 hover:text-slate-200'
+                      }`}
+                    >
+                      <Monitor className="w-3.5 h-3.5" />
+                      Portal Desktop
+                    </button>
+                  </div>
+                </div>
+
+                {/* Container da Imagem 1 */}
+                {(() => {
+                  const portalTab = (shotView === 'desktop') ? 'desktop' : 'mobile';
+                  const shot = getImageDetails(portalTab);
+                  return (
+                    <div className="p-4 bg-slate-950 flex flex-col items-center justify-center">
+                      <div 
+                        onClick={() => openImage(shot.url, `${vendor?.name ?? 'Yunlink'} — ${shot.label}`)}
+                        className="relative group w-full max-w-4xl overflow-hidden rounded-xl border border-slate-800 shadow-2xl bg-slate-900 cursor-zoom-in"
+                      >
+                        <img 
+                          src={shot.url} 
+                          alt={shot.label}
+                          className="w-full h-auto object-contain max-h-[500px] transition-transform duration-300 group-hover:scale-[1.01]"
+                        />
+                        <div className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded border border-slate-800 text-[10px] text-cyan-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                          🔍 Clique para Ampliar (Zoom Fullscreen)
+                        </div>
+                        <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded border border-slate-800 text-[10px] text-slate-300 font-mono">
+                          {shot.desc}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                <div className="p-3 border-t border-slate-800/80 bg-slate-900/30 flex items-center justify-between text-[11px] text-slate-400">
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    Auditado ao vivo em ruike-cloud.com → Config → Auth → Portal
+                  </span>
+                  <span className="text-cyan-400 font-mono font-medium">
+                    {shotView === 'desktop' ? 'Layout Desktop (Widescreen)' : 'Layout Mobile (Responsivo)'}
+                  </span>
+                </div>
+              </div>
+
+              {/* CONFIGURAÇÃO 1: Opções do Portal Captivo */}
+              <div className="glass-card p-5 space-y-3">
+                <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wide flex items-center gap-2">
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                  Opções de Configuração — Portal Captivo (Tela Inicial & Banners)
+                </h4>
+                <div className="flex flex-col gap-2">
+                  {portalItems.map((item, idx) => (
+                    <div key={idx} className="py-1.5 flex items-start gap-3 text-xs text-slate-200 leading-relaxed border-b border-slate-800/40 last:border-0">
                       <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                      <div>{item}</div>
+                      <div>{item.replace(/^•\s*/, '')}</div>
                     </div>
                   ))}
                 </div>
               </div>
-            )}
+            </div>
+
+            {/* ======================================================== */}
+            {/* BLOCO 2: MÉTODOS DE AUTENTICAÇÃO (AUTH METHODS)          */}
+            {/* ======================================================== */}
+            <div className="space-y-5 pt-4">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                <div className="flex items-center gap-2">
+                  <Users className="w-4 h-4 text-cyan-400" />
+                  <h3 className="text-xs font-bold text-cyan-300 uppercase tracking-wide">
+                    2. Configurações dos Métodos de Autenticação (Auth Methods)
+                  </h3>
+                </div>
+                <span className="text-[10px] text-slate-500 font-mono">Submenu: Config → Auth → Auth Methods</span>
+              </div>
+
+              {/* IMAGEM 2: Galeria dos Métodos de Autenticação (Member List, Add Member, One Click) */}
+              <div className="glass-card overflow-hidden border border-cyan-500/20">
+                <div className="p-3.5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900/60">
+                  <div className="flex items-center gap-2">
+                    <Sliders className="w-4 h-4 text-cyan-400" />
+                    <span className="text-xs font-bold text-slate-200 uppercase tracking-wide">
+                      Capturas da Interface: Métodos de Autenticação
+                    </span>
+                  </div>
+
+                  {/* Switcher Auth Methods */}
+                  <div className="flex flex-wrap items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
+                    <button
+                      onClick={() => setShotView('auth-members')}
+                      className={`px-2.5 py-1 rounded text-xs font-medium flex items-center gap-1.5 transition-all ${
+                        shotView === 'auth-members' || (!shotView.startsWith('auth-') && shotView !== 'mobile' && shotView !== 'desktop')
+                          ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-semibold'
+                          : 'text-slate-400 hover:text-slate-200'
+                      }`}
+                    >
+                      <Users className="w-3.5 h-3.5" />
+                      Lista Membros
+                    </button>
+
+                    <button
+                      onClick={() => setShotView('auth-add-member')}
+                      className={`px-2.5 py-1 rounded text-xs font-medium flex items-center gap-1.5 transition-all ${
+                        shotView === 'auth-add-member'
+                          ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-semibold'
+                          : 'text-slate-400 hover:text-slate-200'
+                      }`}
+                    >
+                      <UserPlus className="w-3.5 h-3.5" />
+                      Regra Senha Membro
+                    </button>
+
+                    <button
+                      onClick={() => setShotView('auth-one-click')}
+                      className={`px-2.5 py-1 rounded text-xs font-medium flex items-center gap-1.5 transition-all ${
+                        shotView === 'auth-one-click'
+                          ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-semibold'
+                          : 'text-slate-400 hover:text-slate-200'
+                      }`}
+                    >
+                      <MousePointerClick className="w-3.5 h-3.5" />
+                      Acesso 1-Clique
+                    </button>
+                  </div>
+                </div>
+
+                {/* Container da Imagem 2 */}
+                {(() => {
+                  const authTab = (shotView === 'auth-add-member' || shotView === 'auth-one-click') 
+                    ? shotView 
+                    : 'auth-members';
+                  const shot = getImageDetails(authTab);
+                  return (
+                    <div className="p-4 bg-slate-950 flex flex-col items-center justify-center">
+                      <div 
+                        onClick={() => openImage(shot.url, `${vendor?.name ?? 'Yunlink'} — ${shot.label}`)}
+                        className="relative group w-full max-w-4xl overflow-hidden rounded-xl border border-slate-800 shadow-2xl bg-slate-900 cursor-zoom-in"
+                      >
+                        <img 
+                          src={shot.url} 
+                          alt={shot.label}
+                          className="w-full h-auto object-contain max-h-[500px] transition-transform duration-300 group-hover:scale-[1.01]"
+                        />
+                        <div className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded border border-slate-800 text-[10px] text-cyan-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                          🔍 Clique para Ampliar (Zoom Fullscreen)
+                        </div>
+                        <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded border border-slate-800 text-[10px] text-slate-300 font-mono">
+                          {shot.desc}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                <div className="p-3 border-t border-slate-800/80 bg-slate-900/30 flex items-center justify-between text-[11px] text-slate-400">
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    Auditado ao vivo em ruike-cloud.com → Config → Auth → Auth Methods
+                  </span>
+                  <span className="text-cyan-400 font-mono font-medium">
+                    {shotView === 'auth-add-member' ? 'Modal Add Member (Senha 6-20)' : shotView === 'auth-one-click' ? 'Informativo One Click' : 'Lista & Gestão de Membros'}
+                  </span>
+                </div>
+              </div>
+
+              {/* CONFIGURAÇÃO 2: Opções dos Métodos de Autenticação */}
+              <div className="glass-card p-5 space-y-4">
+                <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wide flex items-center gap-2">
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                  Opções de Configuração — Métodos de Autenticação (Auth Methods)
+                </h4>
+                <div className="flex flex-col gap-2.5">
+                  {authMethodsItems.map((item, idx) => {
+                    if (item.includes('⚠️') || item.includes('Ausência')) {
+                      return (
+                        <div 
+                          key={idx} 
+                          className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3 shadow-lg my-1"
+                        >
+                          <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                          <div className="space-y-1">
+                            <h5 className="text-xs font-bold text-amber-300 uppercase tracking-wide flex items-center gap-2">
+                              <span>⚠️ Destaque Auditado</span>
+                              <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-200 border border-amber-500/40">Ausência de Configuração SMS</span>
+                            </h5>
+                            <p className="text-xs text-amber-200/90 leading-relaxed">
+                              {item.replace(/^•\s*/, '').replace(/^⚠️\s*/, '')}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    }
+                    return (
+                      <div key={idx} className="py-1.5 flex items-start gap-3 text-xs text-slate-200 leading-relaxed border-b border-slate-800/40 last:border-0">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <div>{item.replace(/^•\s*/, '')}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* ======================================================== */}
+            {/* BLOCO 3: ESTRATÉGIAS, WHITE LIST & BLACK LIST (STRATEGY) */}
+            {/* ======================================================== */}
+            <div className="space-y-5 pt-4">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-cyan-400" />
+                  <h3 className="text-xs font-bold text-cyan-300 uppercase tracking-wide">
+                    3. Estratégias de Autenticação, White List & Black List (Strategy Management)
+                  </h3>
+                </div>
+                <span className="text-[10px] text-slate-500 font-mono">Submenu: Config → Auth → Strategy</span>
+              </div>
+
+              {/* IMAGEM 3: Galeria de Capturas de Strategy (Modal IP/MAC & Dropdown Validity) */}
+              <div className="glass-card overflow-hidden border border-cyan-500/20">
+                <div className="p-3.5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900/60">
+                  <div className="flex items-center gap-2">
+                    <Sliders className="w-4 h-4 text-cyan-400" />
+                    <span className="text-xs font-bold text-slate-200 uppercase tracking-wide">
+                      Capturas da Interface: Strategy Management
+                    </span>
+                  </div>
+
+                  {/* Switcher Strategy */}
+                  <div className="flex flex-wrap items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
+                    <button
+                      onClick={() => setShotView('strategy-modal')}
+                      className={`px-2.5 py-1 rounded text-xs font-medium flex items-center gap-1.5 transition-all ${
+                        shotView === 'strategy-modal' || (shotView.startsWith('strategy-') && shotView !== 'strategy-validity')
+                          ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-semibold'
+                          : 'text-slate-400 hover:text-slate-200'
+                      }`}
+                    >
+                      <Layers className="w-3.5 h-3.5" />
+                      Modal Regras (IP/MAC)
+                    </button>
+
+                    <button
+                      onClick={() => setShotView('strategy-validity')}
+                      className={`px-2.5 py-1 rounded text-xs font-medium flex items-center gap-1.5 transition-all ${
+                        shotView === 'strategy-validity'
+                          ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-semibold'
+                          : 'text-slate-400 hover:text-slate-200'
+                      }`}
+                    >
+                      <Clock className="w-3.5 h-3.5" />
+                      Validade (Validity Auth)
+                    </button>
+                  </div>
+                </div>
+
+                {/* Container da Imagem 3 */}
+                {(() => {
+                  const stratTab = (shotView === 'strategy-validity') ? 'strategy-validity' : 'strategy-modal';
+                  const shot = getImageDetails(stratTab);
+                  return (
+                    <div className="p-4 bg-slate-950 flex flex-col items-center justify-center">
+                      <div 
+                        onClick={() => openImage(shot.url, `${vendor?.name ?? 'Yunlink'} — ${shot.label}`)}
+                        className="relative group w-full max-w-4xl overflow-hidden rounded-xl border border-slate-800 shadow-2xl bg-slate-900 cursor-zoom-in"
+                      >
+                        <img 
+                          src={shot.url} 
+                          alt={shot.label}
+                          className="w-full h-auto object-contain max-h-[500px] transition-transform duration-300 group-hover:scale-[1.01]"
+                        />
+                        <div className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded border border-slate-800 text-[10px] text-cyan-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                          🔍 Clique para Ampliar (Zoom Fullscreen)
+                        </div>
+                        <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded border border-slate-800 text-[10px] text-slate-300 font-mono">
+                          {shot.desc}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                <div className="p-3 border-t border-slate-800/80 bg-slate-900/30 flex items-center justify-between text-[11px] text-slate-400">
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    Auditado ao vivo em ruike-cloud.com → Config → Auth → Strategy
+                  </span>
+                  <span className="text-cyan-400 font-mono font-medium">
+                    {shotView === 'strategy-validity' ? 'Validade (One Day a Permanent)' : 'Modal Add Strategy (White & Black List)'}
+                  </span>
+                </div>
+              </div>
+
+              {/* CONFIGURAÇÃO 3: Opções de Strategy Management */}
+              <div className="glass-card p-5 space-y-4">
+                <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wide flex items-center gap-2">
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                  Opções de Configuração — Estratégias & Listas IP/MAC (Strategy Management)
+                </h4>
+                <div className="flex flex-col gap-2.5">
+                  {strategyItems.map((item, idx) => (
+                    <div key={idx} className="py-1.5 flex items-start gap-3 text-xs text-slate-200 leading-relaxed border-b border-slate-800/40 last:border-0">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <div>{item.replace(/^•\s*/, '')}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </>
+        );
+      })()}
 
           </div>
         )}

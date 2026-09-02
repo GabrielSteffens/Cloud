@@ -6,6 +6,8 @@ import { translateFeatureCategory } from '../i18n/featureCategoryLabels';
 import { getCategories } from '../data/categories';
 import { ThumbsUp, AlertTriangle, Cpu, ShieldCheck, X } from 'lucide-react';
 
+import { useLightbox } from '../context/LightboxContext';
+
 interface PlatformDeepDiveProps {
   platform: Platform;
   onClose: () => void;
@@ -13,6 +15,7 @@ interface PlatformDeepDiveProps {
 
 export const PlatformDeepDive: React.FC<PlatformDeepDiveProps> = ({ platform, onClose }) => {
   const { t, language } = useLanguage();
+  const { openImage } = useLightbox();
   const categoryScoreLabels = Object.fromEntries(
     getCategories(language).map(c => [c.key, c.label])
   );
@@ -265,8 +268,14 @@ export const PlatformDeepDive: React.FC<PlatformDeepDiveProps> = ({ platform, on
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {platform.screenshots.map(shot => (
                 <div key={shot.id} className="glass-card overflow-hidden">
-                  <div className="aspect-video bg-slate-900 relative">
-                    <img src={shot.imageUrl} alt={shot.title} className="w-full h-full object-cover" />
+                  <div 
+                    className="aspect-video bg-slate-900 relative cursor-zoom-in group"
+                    onClick={() => openImage(shot.imageUrl, shot.title)}
+                  >
+                    <img src={shot.imageUrl} alt={shot.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <div className="absolute top-2 right-2 p-1.5 rounded bg-slate-950/80 text-cyan-400 text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                      🔍 Tela Cheia
+                    </div>
                   </div>
                   <div className="p-4 space-y-2">
                     <div className="flex items-center justify-between">

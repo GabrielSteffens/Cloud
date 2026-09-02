@@ -4,7 +4,7 @@ import { VENDORS } from '../data/vendors';
 import { CustomTopicDraft, LocalizedText, TopicDefinition, TopicEntryDraft } from '../types/platform';
 
 const TOPICS_KEY = 'cloudmatrix.customTopics.v1';
-const ENTRIES_KEY = 'cloudmatrix.topicEntryDrafts.v1';
+const ENTRIES_KEY = 'cloudmatrix.topicEntryDrafts.v6';
 
 type EntryMap = Record<string, TopicEntryDraft>;
 
@@ -23,13 +23,36 @@ function writeJSON(key: string, value: unknown) {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch {
-    // localStorage unavailable (private mode, quota, etc.) — draft just won't persist
+    // localStorage unavailable
+  }
+}
+
+function getSanitizedEntries(): EntryMap {
+  try {
+    // Purge old drafts if present
+    localStorage.removeItem('cloudmatrix.topicEntryDrafts.v1');
+    localStorage.removeItem('cloudmatrix.topicEntryDrafts.v2');
+    localStorage.removeItem('cloudmatrix.topicEntryDrafts.v3');
+    localStorage.removeItem('cloudmatrix.topicEntryDrafts.v4');
+    localStorage.removeItem('cloudmatrix.topicEntryDrafts.v5');
+    const entries = readJSON<EntryMap>(ENTRIES_KEY, {});
+    const cleaned: EntryMap = {};
+    for (const [k, v] of Object.entries(entries)) {
+      const ptOptions = v?.configOptions?.pt ?? [];
+      const isStale = ptOptions.some(opt => opt.includes('Vouchers') || opt.includes('Isolamento') || opt.includes('RADIUS'));
+      if (!isStale) {
+        cleaned[k] = v;
+      }
+    }
+    return cleaned;
+  } catch {
+    return {};
   }
 }
 
 export function useTopicDrafts() {
   const [customTopics, setCustomTopics] = useState<CustomTopicDraft[]>(() => readJSON(TOPICS_KEY, []));
-  const [entries, setEntries] = useState<EntryMap>(() => readJSON(ENTRIES_KEY, {}));
+  const [entries, setEntries] = useState<EntryMap>(() => getSanitizedEntries());
 
   useEffect(() => { writeJSON(TOPICS_KEY, customTopics); }, [customTopics]);
   useEffect(() => { writeJSON(ENTRIES_KEY, entries); }, [entries]);

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { getPlatforms, getPlatformById } from './data/platforms';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { TopicDraftsProvider, useTopicDraftsContext } from './context/TopicDraftsContext';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
@@ -35,15 +36,15 @@ function MainContent() {
       {/* Navigation Header */}
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {/* Hero Section */}
-      <Hero platforms={platforms} onExploreClick={() => setActiveTab('matrix')} />
-
       {/* Dynamic Main Body Content */}
       <main className="flex-1">
         
         {/* TAB 1: OVERVIEW */}
         {activeTab === 'overview' && (
-          <PlatformOverviewCards platforms={platforms} onSelectPlatform={setSelectedPlatformId} />
+          <>
+            <Hero platforms={platforms} onExploreClick={() => setActiveTab('matrix')} />
+            <PlatformOverviewCards platforms={platforms} onSelectPlatform={setSelectedPlatformId} />
+          </>
         )}
 
         {/* TAB 2: FEATURE MATRIX */}
@@ -115,13 +116,19 @@ function MainContent() {
   );
 }
 
+import { LightboxProvider } from './context/LightboxContext';
+
 export function App() {
   return (
-    <LanguageProvider>
-      <TopicDraftsProvider>
-        <MainContent />
-      </TopicDraftsProvider>
-    </LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <TopicDraftsProvider>
+          <LightboxProvider>
+            <MainContent />
+          </LightboxProvider>
+        </TopicDraftsProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }
 
