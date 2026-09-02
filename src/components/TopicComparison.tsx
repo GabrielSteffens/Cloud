@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { TopicDefinition } from '../types/platform';
 import { useLanguage } from '../i18n/LanguageContext';
-import { Columns3, DoorOpen, MapPin, CheckCircle2, Clock, ImageOff, Plus, Download, Pencil } from 'lucide-react';
+import {
+  Columns3, DoorOpen, MapPin, CheckCircle2, Clock, ImageOff, Plus, Download, Pencil, ChevronDown,
+  UserCog, Boxes, Wifi, Router, Network, Activity, Bell, RefreshCw, Plug, Wallet
+} from 'lucide-react';
 
 const TOPIC_ICONS: Record<string, React.FC<{ className?: string }>> = {
-  DoorOpen
+  DoorOpen, UserCog, Boxes, Wifi, Router, Network, Activity, Bell, RefreshCw, Plug, Wallet
 };
 
 interface TopicComparisonProps {
@@ -17,6 +20,18 @@ interface TopicComparisonProps {
 export const TopicComparison: React.FC<TopicComparisonProps> = ({ topics, onOpenVendorHub, onAddTopic, onExport }) => {
   const { t } = useLanguage();
   const [activeTopicId, setActiveTopicId] = useState<string>(topics[0]?.id ?? '');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const activeTopic = topics.find(topic => topic.id === activeTopicId) ?? topics[0];
 
@@ -53,20 +68,43 @@ export const TopicComparison: React.FC<TopicComparisonProps> = ({ topics, onOpen
           </div>
         </div>
 
-        {/* Topic Selector */}
-        <div className="flex flex-wrap items-center gap-2 mb-8">
-          <span className="text-xs font-medium text-slate-400">{t('topics.selectTopic')}</span>
-          {topics.map(topic => (
+        {/* Topic Selector Dropdown */}
+        <div className="mb-8">
+          <span className="text-xs font-medium text-slate-400 block mb-2">{t('topics.selectTopic')}</span>
+          <div className="relative w-full md:w-[440px]" ref={dropdownRef}>
             <button
-              key={topic.id}
-              onClick={() => setActiveTopicId(topic.id)}
-              className={`chip px-3 py-1.5 rounded text-xs font-medium border ${
-                activeTopic.id === topic.id ? 'chip-active' : ''
-              }`}
+              onClick={() => setIsDropdownOpen(open => !open)}
+              className="chip w-full flex items-center justify-between gap-2 px-4 py-2.5 rounded text-sm font-semibold border"
             >
-              {topic.title}
+              <span className="flex items-center gap-2.5 min-w-0">
+                <TopicIcon className="w-4 h-4 text-cyan-400 shrink-0" />
+                <span className="truncate">{activeTopic.title}</span>
+              </span>
+              <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
-          ))}
+
+            {isDropdownOpen && (
+              <div className="absolute z-20 top-full left-0 mt-1.5 w-full glass-card border border-slate-800 rounded-md overflow-hidden shadow-lg max-h-80 overflow-y-auto">
+                {topics.map(topic => {
+                  const Icon = TOPIC_ICONS[topic.iconName] || Columns3;
+                  const isActive = topic.id === activeTopic.id;
+                  return (
+                    <button
+                      key={topic.id}
+                      onClick={() => { setActiveTopicId(topic.id); setIsDropdownOpen(false); }}
+                      className={`w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-xs font-medium leading-snug transition-colors ${
+                        isActive ? 'bg-cyan-500/10 text-cyan-400' : 'text-slate-300 hover:bg-slate-900'
+                      }`}
+                    >
+                      <Icon className="w-4 h-4 shrink-0" />
+                      <span className="flex-1">{topic.title}</span>
+                      {isActive && <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Active Topic Intro */}

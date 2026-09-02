@@ -2,10 +2,13 @@ import React from 'react';
 import { TopicDefinition } from '../types/platform';
 import { VENDORS } from '../data/vendors';
 import { useLanguage } from '../i18n/LanguageContext';
-import { Columns3, DoorOpen, ArrowLeft, CheckCircle2, Clock, Pencil, ImageOff } from 'lucide-react';
+import {
+  Columns3, DoorOpen, ArrowLeft, CheckCircle2, Clock, Pencil, ImageOff,
+  UserCog, Boxes, Wifi, Router, Network, Activity, Bell, RefreshCw, Plug, Wallet
+} from 'lucide-react';
 
 const TOPIC_ICONS: Record<string, React.FC<{ className?: string }>> = {
-  DoorOpen
+  DoorOpen, UserCog, Boxes, Wifi, Router, Network, Activity, Bell, RefreshCw, Plug, Wallet
 };
 
 interface VendorTopicsHubProps {

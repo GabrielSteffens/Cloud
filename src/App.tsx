@@ -8,7 +8,6 @@ import { ExecutiveSummary } from './components/ExecutiveSummary';
 import { PlatformOverviewCards } from './components/PlatformOverviewCards';
 import { CapabilityRadar } from './components/CapabilityRadar';
 import { FeatureMatrix } from './components/FeatureMatrix';
-import { HeadToHead } from './components/HeadToHead';
 import { ScreenshotGallery } from './components/ScreenshotGallery';
 import { UseCaseExplorer } from './components/UseCaseExplorer';
 import { TopicComparison } from './components/TopicComparison';
@@ -60,27 +59,12 @@ function MainContent() {
           <FeatureMatrix platforms={platforms} />
         )}
 
-        {/* TAB 3: HEAD-TO-HEAD COMPARISON */}
-        {activeTab === 'head-to-head' && (
-          <HeadToHead platforms={platforms} />
-        )}
-
-        {/* TAB 4: CAPABILITY RADAR */}
-        {activeTab === 'radar' && (
-          <CapabilityRadar platforms={platforms} />
-        )}
-
-        {/* TAB 5: UI NAVIGATION GALLERY */}
+        {/* TAB 3: UI NAVIGATION GALLERY */}
         {activeTab === 'gallery' && (
           <ScreenshotGallery platforms={platforms} />
         )}
 
-        {/* TAB 6: USE CASE EXPLORER */}
-        {activeTab === 'use-cases' && (
-          <UseCaseExplorer platforms={platforms} onSelectPlatform={setSelectedPlatformId} />
-        )}
-
-        {/* TAB 7: TOPIC COMPARISON */}
+        {/* TAB 4: TOPIC COMPARISON */}
         {activeTab === 'topics' && (
           topicEditTarget ? (
             <TopicEntryEditor

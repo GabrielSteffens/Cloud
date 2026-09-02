@@ -17,10 +17,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'header.zeroCredentials': 'Zero Credentials Hardcoded',
     'nav.overview': 'Platforms Overview',
     'nav.matrix': 'Feature Matrix',
-    'nav.headToHead': 'Head-to-Head',
-    'nav.radar': 'Capability Radar',
     'nav.gallery': 'UI Navigation Gallery',
-    'nav.useCases': 'Use Case Explorer',
     'nav.topics': 'Topic Comparison',
 
     // Hero
@@ -63,19 +60,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'matrix.noResults': 'No matching features found for search term',
     'matrix.statusLabel': 'Status:',
     'matrix.verifiedNote': 'Verified against evidence captured in the live interface.',
-
-    // Head-to-Head
-    'h2h.title': 'Side-by-Side Head-to-Head Comparison',
-    'h2h.subtitle': 'Select 2 to 4 platforms to perform a direct architectural and operational comparison.',
-    'h2h.subtitleSingle': 'Full architectural profile of the platform audited so far. This view will support real side-by-side comparison once more platforms are added.',
-    'h2h.singlePlatformNote': 'Only one platform is available for comparison right now. Below is its full architecture and licensing profile — check back as more audited platforms are added.',
-    'h2h.compareLabel': 'Compare:',
-    'h2h.overallRating': 'Overall Rating',
-    'h2h.deploymentModel': 'Deployment Model:',
-    'h2h.multiTenancy': 'Multi-Tenancy Hierarchy:',
-    'h2h.adoptionWorkflow': 'Adoption Workflow:',
-    'h2h.apiSupport': 'API Support:',
-    'h2h.licensingStructure': 'Licensing Structure:',
 
     // Screenshot Gallery
     'gallery.title': 'Screen-by-Screen UI Navigation Gallery',
@@ -196,10 +180,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'header.zeroCredentials': 'Zero Credenciais Expostas',
     'nav.overview': 'Visão Geral',
     'nav.matrix': 'Matriz de Recursos',
-    'nav.headToHead': 'Comparativo Lado a Lado',
-    'nav.radar': 'Radar de Capacidades',
     'nav.gallery': 'Galeria de Interfaces',
-    'nav.useCases': 'Explorador de Casos de Uso',
     'nav.topics': 'Comparação por Tópico',
 
     // Hero
@@ -242,19 +223,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'matrix.noResults': 'Nenhum recurso encontrado para o termo',
     'matrix.statusLabel': 'Status:',
     'matrix.verifiedNote': 'Verificado com evidências capturadas na interface ao vivo.',
-
-    // Head-to-Head
-    'h2h.title': 'Comparativo Direto Lado a Lado',
-    'h2h.subtitle': 'Selecione de 2 a 4 plataformas para realizar uma comparação direta de arquitetura e operação.',
-    'h2h.subtitleSingle': 'Perfil arquitetônico completo da plataforma auditada até agora. Esta tela passa a comparar lado a lado assim que mais plataformas forem incluídas.',
-    'h2h.singlePlatformNote': 'No momento há apenas uma plataforma disponível para comparação. Abaixo está o perfil completo de arquitetura e licenciamento dela — volte em breve conforme mais plataformas auditadas forem adicionadas.',
-    'h2h.compareLabel': 'Comparar:',
-    'h2h.overallRating': 'Classificação Geral',
-    'h2h.deploymentModel': 'Modelo de Implantação:',
-    'h2h.multiTenancy': 'Hierarquia Multi-Tenant:',
-    'h2h.adoptionWorkflow': 'Fluxo de Adoção:',
-    'h2h.apiSupport': 'Suporte a API:',
-    'h2h.licensingStructure': 'Estrutura de Licenciamento:',
 
     // Screenshot Gallery
     'gallery.title': 'Galeria de Navegação de Telas da Interface (UI)',

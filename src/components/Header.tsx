@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
-import { Server, BarChart3, Layers, Sparkles, Image, Compass, Columns3 } from 'lucide-react';
+import { Server, BarChart3, Image, Columns3 } from 'lucide-react';
 
 interface HeaderProps {
   activeTab: string;
@@ -13,10 +13,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
   const navItems = [
     { id: 'overview', label: t('nav.overview'), icon: Server },
     { id: 'matrix', label: t('nav.matrix'), icon: BarChart3 },
-    { id: 'head-to-head', label: t('nav.headToHead'), icon: Layers },
-    { id: 'radar', label: t('nav.radar'), icon: Sparkles },
     { id: 'gallery', label: t('nav.gallery'), icon: Image },
-    { id: 'use-cases', label: t('nav.useCases'), icon: Compass },
     { id: 'topics', label: t('nav.topics'), icon: Columns3 }
   ];
 
@@ -49,8 +46,9 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             })}
           </nav>
 
-          {/* Language Toggle */}
-          <div className="flex items-center gap-2 shrink-0">
+          {/* Version & Language Toggle */}
+          <div className="flex items-center gap-3 shrink-0">
+            <span className="text-[11px] font-mono text-[rgba(255,255,255,0.65)] whitespace-nowrap">v{__APP_VERSION__}</span>
             <div className="flex items-center gap-0.5 bg-[rgba(255,255,255,0.12)] p-0.5 rounded shrink-0">
               <button
                 onClick={() => setLanguage('pt')}
