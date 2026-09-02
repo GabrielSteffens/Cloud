@@ -83,6 +83,7 @@ function MainContent() {
             <TopicComparison
               topics={topics}
               onOpenVendorHub={setVendorHubPlatformId}
+              onSelectTopicEntry={(topicId, platformId) => setTopicEditTarget({ topicId, platformId })}
               onAddTopic={() => setShowNewTopicModal(true)}
               onExport={() => setShowExportModal(true)}
             />

@@ -171,13 +171,30 @@ export const getTopics = (lang: 'en' | 'pt'): TopicDefinition[] => {
           vendor: 'CloudNetlot / Ruike Technology',
           logoColor: '#2563eb',
           available: true,
-          navigationPath: 'ruike-cloud.com → Project 1 → Config → Auth → Portal Page',
+          screenshotUrl: '/yunlink_portal_mobile.png',
+          screenshots: {
+            mobile: '/yunlink_portal_mobile.png',
+            desktop: '/yunlink_portal_desktop.png'
+          },
+          navigationPath: 'ruike-cloud.com → Project 1 → Config → Auth → Portal',
           summary: isPt
-            ? 'Portal captivo integrado com preview alternável entre mobile e desktop, editor de banner (1170x1020px, máx. 200KB, JPG/PNG), cor de tema, URL de redirecionamento e 3 fases de fluxo: Pré-Autenticação, Em Autenticação e Pós-Autenticação. Auditado ao vivo, porém sem captura de tela salva desta janela específica.'
-            : 'Built-in captive portal with switchable mobile/desktop preview, banner editor (1170x1020px, max 200KB, JPG/PNG), theme color, redirect URL, and a 3-stage flow: Before Auth, Process Auth, and After Auth. Live-audited, but no screenshot was captured for this specific screen yet.',
+            ? 'Interface de gerenciamento de portal captivo auditada no Yunlink (ruike-cloud.com). Oferece visualização em tempo real com alternância entre Mobile e Desktop, cobrindo as 3 fases do fluxo de acesso: Pré-Autenticação (Before Auth), Em Autenticação (Process Auth) e Pós-Autenticação (After Auth).'
+            : 'Audited Captive Portal management interface on Yunlink (ruike-cloud.com). Features real-time visual preview switching between Mobile and Desktop views across 3 access lifecycle stages: Before Auth, Process Auth, and After Auth.',
           configOptions: isPt
-            ? ['Autenticação via SMS', 'Vouchers com código de acesso', 'Login de membros', 'Acesso 1-clique', 'Integração com servidor RADIUS externo', 'Isolamento de clientes em Camada 2', 'Submenus: Portal, Auth Methods, Strategy, Auth Config, Auth Details']
-            : ['SMS authentication', 'Passcode access vouchers', 'Member login', 'One-click access', 'External RADIUS server integration', 'Layer 2 client isolation', 'Sub-menus: Portal, Auth Methods, Strategy, Auth Config, Auth Details']
+            ? [
+                'Carrossel de Banners: Configuração de exatamente 3 imagens carrossel na página principal (Before Auth). Não possui opção para deixar uma imagem estática única sem rotação.',
+                'Resoluções e Limites: Banner Mobile sugerido em 1170x1020px (máx. 200KB, JPG/PNG); Banner Desktop sugerido em 1920x500px (máx. 200KB, JPG/PNG).',
+                'Métodos de Autenticação Disponíveis: "One Click" (Acesso com 1 clique), "SMS" (Verificação via mensagem de texto) e "Member" (Login de membros/usuários cadastrados).',
+                'Parâmetros Personalizáveis: Título do Portal (Title Name), URL de redirecionamento pós-login (Guide Address, ex: https://www.baidu.com) e Seletor de Cor do Tema (Color).',
+                'Submenus da Seção Auth: Estrutura dividida em Portal, Auth Methods, Strategy, Auth Config e Auth Details.'
+              ]
+            : [
+                'Carousel Banners: Configures exactly 3 carousel banner images on the main page (Before Auth). No option available for a single fixed static image without carousel rotation.',
+                'Resolutions & Limits: Mobile banner suggested at 1170x1020px (max 200KB, JPG/PNG); Desktop banner suggested at 1920x500px (max 200KB, JPG/PNG).',
+                'Available Auth Methods: "One Click" (Direct 1-click access), "SMS" (Text verification code), and "Member" (Registered user/member login).',
+                'Customizable Parameters: Portal Title (Title Name), Post-auth redirect URL (Guide Address, e.g., https://www.baidu.com), and Accent Theme Color picker (Color).',
+                'Auth Section Sub-menus: Structured into Portal, Auth Methods, Strategy, Auth Config, and Auth Details.'
+              ]
         },
         ...pendingOtherVendors({ pt: 'Controle de Acesso de Visitantes (Captive Portal)', en: 'Guest Access Control (Captive Portal)' })
       ]

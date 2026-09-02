@@ -127,6 +127,10 @@ export interface TopicPlatformEntry {
   logoColor: string;
   available: boolean;
   screenshotUrl?: string;
+  screenshots?: {
+    mobile?: string;
+    desktop?: string;
+  };
   navigationPath?: string;
   summary?: string;
   configOptions?: string[];

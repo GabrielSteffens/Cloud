@@ -139,6 +139,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'topics.clickToEdit': 'Click a platform name to fill in or edit its data',
     'topics.addTopic': 'New Topic',
     'topics.export': 'Export Data',
+    'topics.previewMode': 'Preview Mode',
+    'topics.viewDetailedScreen': 'View Detailed Screen',
 
     // New Topic Modal
     'newTopic.heading': 'New Macro Topic',
@@ -302,6 +304,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'topics.clickToEdit': 'Clique no nome de uma plataforma para preencher ou editar os dados dela',
     'topics.addTopic': 'Novo Tópico',
     'topics.export': 'Exportar Dados',
+    'topics.previewMode': 'Modo Preview',
+    'topics.viewDetailedScreen': 'Ver Tela Detalhada',
 
     // New Topic Modal
     'newTopic.heading': 'Novo Tópico Macro',

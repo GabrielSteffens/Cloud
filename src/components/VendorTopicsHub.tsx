@@ -3,7 +3,7 @@ import { TopicDefinition } from '../types/platform';
 import { VENDORS } from '../data/vendors';
 import { useLanguage } from '../i18n/LanguageContext';
 import {
-  Columns3, DoorOpen, ArrowLeft, CheckCircle2, Clock, Pencil, ImageOff,
+  Columns3, DoorOpen, ArrowLeft, CheckCircle2, Clock, ImageOff, ChevronRight,
   UserCog, Boxes, Wifi, Router, Network, Activity, Bell, RefreshCw, Plug, Wallet
 } from 'lucide-react';
 
@@ -102,7 +102,9 @@ export const VendorTopicsHub: React.FC<VendorTopicsHubProps> = ({ platformId, to
                   </span>
                 )}
 
-                <Pencil className="w-4 h-4 text-slate-400 shrink-0" />
+                <div className="flex items-center gap-1 text-xs font-medium text-cyan-400 shrink-0">
+                  <ChevronRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform" />
+                </div>
               </button>
             );
           })}
