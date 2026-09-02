@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { Server, BarChart3, Image, Columns3 } from 'lucide-react';
+import { APP_VERSION } from '../version';
 
 interface HeaderProps {
   activeTab: string;
@@ -48,7 +49,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
 
           {/* Version & Language Toggle */}
           <div className="flex items-center gap-3 shrink-0">
-            <span className="text-[11px] font-mono text-[rgba(255,255,255,0.65)] whitespace-nowrap">v{__APP_VERSION__}</span>
+            <span className="text-[11px] font-mono text-[rgba(255,255,255,0.65)] whitespace-nowrap">v{APP_VERSION}</span>
             <div className="flex items-center gap-0.5 bg-[rgba(255,255,255,0.12)] p-0.5 rounded shrink-0">
               <button
                 onClick={() => setLanguage('pt')}
