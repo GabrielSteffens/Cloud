@@ -16,7 +16,7 @@ interface TopicEntryEditorProps {
   onBack: () => void;
 }
 
-type ShotTab = 'mobile' | 'desktop' | 'auth-members' | 'auth-add-member' | 'auth-one-click' | 'strategy-modal' | 'strategy-validity' | 'auth-config' | 'auth-rules' | 'auth-device';
+type ShotTab = 'mobile' | 'desktop' | 'auth-members' | 'auth-add-member' | 'auth-one-click' | 'strategy-modal' | 'strategy-validity' | 'auth-config' | 'auth-rules' | 'auth-device' | 'auth-details';
 
 export const TopicEntryEditor: React.FC<TopicEntryEditorProps> = ({ topicId, platformId, onBack }) => {
   const { language, t } = useLanguage();
@@ -95,6 +95,8 @@ export const TopicEntryEditor: React.FC<TopicEntryEditorProps> = ({ topicId, pla
         return { url: '/yunlink_auth_rules_modal.png', label: 'Auth Rules — Modal de Seleção de SSIDs', desc: 'Botão Auth Range → Modal Auth Rules (Checkboxes de SSIDs: wireless, SSID1, SSID2, test1017)' };
       case 'auth-device':
         return { url: '/yunlink_auth_device_modal.png', label: 'Auth Device — Modal de Dispositivos Autorizados', desc: 'Botão Auth Device → Modal Auth Device (Tabela SN/Name/Type/IP/MAC/Config)' };
+      case 'auth-details':
+        return { url: '/yunlink_auth_details.png', label: 'Auth Details — Estatísticas e Histórico de Conexões', desc: 'Config → Auth → Auth Details (Tabela com No./Account/Auth Method/SN/Status/IP/MAC/Time, Filtro e Export)' };
     }
   };
 
@@ -211,6 +213,7 @@ export const TopicEntryEditor: React.FC<TopicEntryEditorProps> = ({ topicId, pla
               const authMethodsItems = (configSections[1] || []).filter(i => !i.startsWith('📌'));
               const strategyItems = (configSections[2] || []).filter(i => !i.startsWith('📌'));
               const authConfigItems = (configSections[3] || []).filter(i => !i.startsWith('📌'));
+              const authDetailsItems = (configSections[4] || []).filter(i => !i.startsWith('📌'));
 
               return (
                 <>
@@ -687,6 +690,83 @@ export const TopicEntryEditor: React.FC<TopicEntryEditorProps> = ({ topicId, pla
                   </h4>
                   <div className="flex flex-col gap-2.5">
                     {authConfigItems.map((item, idx) => (
+                      <div key={idx} className="py-1.5 flex items-start gap-3 text-xs text-slate-200 leading-relaxed border-b border-slate-800/40 last:border-0">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <div>{item.replace(/^•\s*/, '')}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* ======================================================== */}
+              {/* BLOCO 5: DETALHAMENTO & LOGS DE AUTENTICAÇÃO (AUTH DETAILS) */}
+              {/* ======================================================== */}
+              <div className="space-y-5 pt-4">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-cyan-400" />
+                    <h3 className="text-xs font-bold text-cyan-300 uppercase tracking-wide">
+                      5. Detalhamento & Logs de Autenticação (Auth Details)
+                    </h3>
+                  </div>
+                  <span className="text-[10px] text-slate-500 font-mono">Submenu: Config → Auth → Auth Details</span>
+                </div>
+
+                {/* IMAGEM 5: Captura de Auth Details */}
+                <div className="glass-card overflow-hidden border border-cyan-500/20">
+                  <div className="p-3.5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900/60">
+                    <div className="flex items-center gap-2">
+                      <Sliders className="w-4 h-4 text-cyan-400" />
+                      <span className="text-xs font-bold text-slate-200 uppercase tracking-wide">
+                        Captura da Interface: Auth Details
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs font-semibold text-cyan-300 px-2.5 py-1">
+                      Tabela de Conexões & Logs
+                    </div>
+                  </div>
+
+                  {/* Container da Imagem 5 */}
+                  <div className="p-4 bg-slate-950 flex flex-col items-center justify-center">
+                    <div 
+                      onClick={() => openImage('/yunlink_auth_details.png', `${vendor?.name ?? 'Yunlink'} — Auth Details (Estatísticas e Histórico de Conexões)`)}
+                      className="relative group w-full max-w-4xl overflow-hidden rounded-xl border border-slate-800 shadow-2xl bg-slate-900 cursor-zoom-in"
+                    >
+                      <img 
+                        src="/yunlink_auth_details.png" 
+                        alt="Auth Details — Estatísticas e Histórico de Conexões"
+                        className="w-full h-auto object-contain max-h-[500px] transition-transform duration-300 group-hover:scale-[1.01]"
+                      />
+                      <div className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded border border-slate-800 text-[10px] text-cyan-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                        🔍 Clique para Ampliar (Zoom Fullscreen)
+                      </div>
+                      <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded border border-slate-800 text-[10px] text-slate-300 font-mono">
+                        Config → Auth → Auth Details (Tabela No./Account/Auth Method/SN/Status/IP/MAC/Time)
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-3 border-t border-slate-800/80 bg-slate-900/30 flex items-center justify-between text-[11px] text-slate-400">
+                    <span className="flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                      Auditado ao vivo em ruike-cloud.com → Config → Auth → Auth Details
+                    </span>
+                    <span className="text-cyan-400 font-mono font-medium">
+                      Filtros: All / One Click / Member (SMS Ausente)
+                    </span>
+                  </div>
+                </div>
+
+                {/* CONFIGURAÇÃO 5: Opções de Auth Details */}
+                <div className="glass-card p-5 space-y-4">
+                  <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wide flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                    Opções de Configuração — Histórico, Filtros & Exportação (Auth Details)
+                  </h4>
+                  <div className="flex flex-col gap-2.5">
+                    {authDetailsItems.map((item, idx) => (
                       <div key={idx} className="py-1.5 flex items-start gap-3 text-xs text-slate-200 leading-relaxed border-b border-slate-800/40 last:border-0">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                         <div>{item.replace(/^•\s*/, '')}</div>

@@ -206,7 +206,14 @@ export const getTopics = (lang: 'en' | 'pt'): TopicDefinition[] => {
                 '• Auth page config: Dropdown "Auth page" (valor padrão: Default), Dropdown "Strategy" (vincula uma estratégia de acesso), Dropdown "Language" (valor exibido: English). Botão Save salva as configurações.',
                 '• Botão Auth Range → Modal "Auth Rules": Abre checklist com todos os SSIDs do projeto para definir em quais redes a autenticação será aplicada. SSIDs confirmados: wireless, SSID1, SSID2, test1017. Botão OK confirma; X fecha sem salvar.',
                 '• Botão Auth Device → Modal "Auth Device": Abas "Add Devices" e "Auth Device 0 Units". Tabela com colunas: Device serial number, Name, Type, IP, MAC, Config. Estado vazio exibe ilustração de roteador Wi-Fi com mensagem "Please select the button in the upper left corner to add the device". Propósito: vincular dispositivos específicos ao contexto do portal captivo (possivelmente whitelist baseada em hardware). Nenhum dispositivo vinculado no ambiente auditado (Total 0).',
-                '• Botão Delete All: Remove todos os vínculos de configuração de auth do projeto.'
+                '• Botão Delete All: Remove todos os vínculos de configuração de auth do projeto.',
+                '---',
+                '📌 Detalhamento & Logs de Autenticação (Auth Details):',
+                '• Tabela de Registros de Conexão: Exibe o histórico de logins do portal captivo com colunas No., Account, Auth Method, SN (Número de Série do AP/Gateway), Auth Status, Client IP, Client MAC e Auth Time.',
+                '• Filtro por Método de Autenticação: Dropdown de filtro com opções "All", "One Click" e "Member". ⚠️ O método SMS também não aparece como opção de filtro nesta tela.',
+                '• Campo de Busca: Pesquisa por nome de conta, IP ou MAC do cliente.',
+                '• Botão Export: Permite exportar a lista de histórico de conexões em arquivo.',
+                '• Estado Vazio: Exibe "Empty Data" com Total 0 quando não há sessões registradas no período.'
               ]
             : [
                 'Carousel Banners: Configures exactly 3 carousel banner images on the main page (Before Auth). No option available for a single fixed static image without carousel rotation.',
@@ -233,7 +240,14 @@ export const getTopics = (lang: 'en' | 'pt'): TopicDefinition[] => {
                 '• Auth page config: "Auth page" dropdown (default value: Default), "Strategy" dropdown (links an access strategy), "Language" dropdown (shown value: English). Save button commits the settings.',
                 '• Auth Range button → "Auth Rules" modal: Opens a checklist of all project SSIDs to define which networks the auth config applies to. Confirmed SSIDs: wireless, SSID1, SSID2, test1017. OK confirms; X closes without saving.',
                 '• Auth Device button → "Auth Device" modal: Tabs "Add Devices" and "Auth Device 0 Units". Table columns: Device serial number, Name, Type, IP, MAC, Config. Empty state shows a Wi-Fi router illustration with message "Please select the button in the upper left corner to add the device". Purpose: bind specific devices to the captive portal context (likely hardware-based whitelisting). No devices bound in the audited environment (Total 0).',
-                '• Delete All button: Removes all auth configuration bindings from the project.'
+                '• Delete All button: Removes all auth configuration bindings from the project.',
+                '---',
+                '📌 Authentication Details & Logs (Auth Details):',
+                '• Connection Log Table: Displays captive portal login history with columns No., Account, Auth Method, SN (AP/Gateway Serial Number), Auth Status, Client IP, Client MAC, and Auth Time.',
+                '• Auth Method Filter: Dropdown filter with options "All", "One Click", and "Member". ⚠️ The SMS method is also absent from the filter options on this screen.',
+                '• Search Input: Search by account name, client IP, or MAC address.',
+                '• Export Button: Allows exporting the connection history log file.',
+                '• Empty State: Displays "Empty Data" with Total 0 when no sessions are recorded.'
               ]
         },
         ...pendingOtherVendors({ pt: 'Controle de Acesso de Visitantes (Captive Portal)', en: 'Guest Access Control (Captive Portal)' })
