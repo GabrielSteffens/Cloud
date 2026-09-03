@@ -4,7 +4,7 @@ import { VENDORS } from '../data/vendors';
 import { CustomTopicDraft, LocalizedText, TopicDefinition, TopicEntryDraft } from '../types/platform';
 
 const TOPICS_KEY = 'cloudmatrix.customTopics.v1';
-const ENTRIES_KEY = 'cloudmatrix.topicEntryDrafts.v6';
+const ENTRIES_KEY = 'cloudmatrix.topicEntryDrafts.v7';
 
 type EntryMap = Record<string, TopicEntryDraft>;
 
@@ -35,6 +35,7 @@ function getSanitizedEntries(): EntryMap {
     localStorage.removeItem('cloudmatrix.topicEntryDrafts.v3');
     localStorage.removeItem('cloudmatrix.topicEntryDrafts.v4');
     localStorage.removeItem('cloudmatrix.topicEntryDrafts.v5');
+    localStorage.removeItem('cloudmatrix.topicEntryDrafts.v6');
     const entries = readJSON<EntryMap>(ENTRIES_KEY, {});
     const cleaned: EntryMap = {};
     for (const [k, v] of Object.entries(entries)) {

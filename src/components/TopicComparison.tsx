@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { TopicDefinition } from '../types/platform';
 import { useLanguage } from '../i18n/LanguageContext';
 import {
-  Columns3, DoorOpen, MapPin, CheckCircle2, Clock, ImageOff, Plus, Download, Pencil, ChevronDown, Eye, ExternalLink,
+  Columns3, DoorOpen, MapPin, CheckCircle2, Clock, ImageOff, Plus, Download, Pencil, ChevronDown, Eye, ExternalLink, AlertTriangle,
   UserCog, Boxes, Wifi, Router, Network, Activity, Bell, RefreshCw, Plug, Wallet
 } from 'lucide-react';
 
@@ -245,13 +245,41 @@ export const TopicComparison: React.FC<TopicComparisonProps> = ({ topics, onOpen
                         <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide block mb-1.5">
                           {t('topics.configOptions')}
                         </span>
-                        <div className="space-y-1">
-                          {entry.configOptions.map((opt, idx) => (
-                            <div key={idx} className="flex items-start gap-1.5 text-[11px] text-slate-300">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                              <span>{opt}</span>
-                            </div>
-                          ))}
+                        <div className="space-y-1.5">
+                          {entry.configOptions.map((opt, idx) => {
+                            if (opt === '---') {
+                              return <hr key={idx} className="my-3 border-slate-800" />;
+                            }
+                            if (opt.startsWith('📌')) {
+                              return (
+                                <div key={idx} className="text-[11px] font-bold text-cyan-400 mt-3 mb-1 flex items-center gap-1.5">
+                                  <span>{opt}</span>
+                                </div>
+                              );
+                            }
+                            if (opt.startsWith('⚠️')) {
+                              return (
+                                <div key={idx} className="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] font-medium my-2 flex items-start gap-2 shadow-sm">
+                                  <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                                  <span className="leading-snug">{opt.replace(/^⚠️\s*/, '')}</span>
+                                </div>
+                              );
+                            }
+                            if (opt.startsWith('•')) {
+                              return (
+                                <div key={idx} className="flex items-start gap-2 text-[11px] text-slate-300 pl-2 leading-snug">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/70 shrink-0 mt-1.5" />
+                                  <span>{opt.replace(/^•\s*/, '')}</span>
+                                </div>
+                              );
+                            }
+                            return (
+                              <div key={idx} className="flex items-start gap-1.5 text-[11px] text-slate-300 leading-snug">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                                <span>{opt}</span>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     )}
