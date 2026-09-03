@@ -6,7 +6,7 @@ import { VENDORS } from '../data/vendors';
 import { 
   ArrowLeft, Save, CheckCircle2, MapPin, Pencil, 
   Smartphone, Monitor, ShieldCheck, Sparkles, Sliders, ImageOff,
-  Users, UserPlus, MousePointerClick, AlertTriangle, Layers, Clock
+  Users, UserPlus, MousePointerClick, AlertTriangle, Layers, Clock, Boxes
 } from 'lucide-react';
 import { useLightbox } from '../context/LightboxContext';
 
@@ -16,7 +16,7 @@ interface TopicEntryEditorProps {
   onBack: () => void;
 }
 
-type ShotTab = 'mobile' | 'desktop' | 'auth-members' | 'auth-add-member' | 'auth-one-click' | 'strategy-modal' | 'strategy-validity';
+type ShotTab = 'mobile' | 'desktop' | 'auth-members' | 'auth-add-member' | 'auth-one-click' | 'strategy-modal' | 'strategy-validity' | 'auth-config' | 'auth-rules' | 'auth-device';
 
 export const TopicEntryEditor: React.FC<TopicEntryEditorProps> = ({ topicId, platformId, onBack }) => {
   const { language, t } = useLanguage();
@@ -89,6 +89,12 @@ export const TopicEntryEditor: React.FC<TopicEntryEditorProps> = ({ topicId, pla
         return { url: '/yunlink_auth_strategy_modal.png', label: 'Strategy Management — Modal de Regras (White/Black List IP/MAC)', desc: 'Config → Auth → Strategy → Add (Tabela com Busca e Batch Delete)' };
       case 'strategy-validity':
         return { url: '/yunlink_auth_strategy_validity.png', label: 'Strategy Management — Tempo de Validade (Validity Auth)', desc: 'Menu Validity Auth (Opções de expiração One Day a Seven Day e Permanent)' };
+      case 'auth-config':
+        return { url: '/yunlink_deep_02_auth_config_1788351322680.png', label: 'Auth Config — Painel de Autenticação & Configurações de Página', desc: 'Config → Auth → Auth Config (One Click Habilitado / Member Desabilitado / Auth page config)' };
+      case 'auth-rules':
+        return { url: '/yunlink_auth_rules_modal.png', label: 'Auth Rules — Modal de Seleção de SSIDs', desc: 'Botão Auth Range → Modal Auth Rules (Checkboxes de SSIDs: wireless, SSID1, SSID2, test1017)' };
+      case 'auth-device':
+        return { url: '/yunlink_auth_device_modal.png', label: 'Auth Device — Modal de Dispositivos Autorizados', desc: 'Botão Auth Device → Modal Auth Device (Tabela SN/Name/Type/IP/MAC/Config)' };
     }
   };
 
@@ -204,6 +210,7 @@ export const TopicEntryEditor: React.FC<TopicEntryEditorProps> = ({ topicId, pla
               const portalItems = (configSections[0] || []).filter(i => !i.startsWith('📌'));
               const authMethodsItems = (configSections[1] || []).filter(i => !i.startsWith('📌'));
               const strategyItems = (configSections[2] || []).filter(i => !i.startsWith('📌'));
+              const authConfigItems = (configSections[3] || []).filter(i => !i.startsWith('📌'));
 
               return (
                 <>
@@ -559,6 +566,135 @@ export const TopicEntryEditor: React.FC<TopicEntryEditorProps> = ({ topicId, pla
                 </div>
               </div>
             </div>
+
+            {/* ======================================================== */}
+            {/* BLOCO 4: CONFIGURAÇÕES DE AUTENTICAÇÃO, SSIDs & DISPOSITIVOS (AUTH CONFIG) */}
+            {/* ======================================================== */}
+              <div className="space-y-5 pt-4">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-cyan-400" />
+                    <h3 className="text-xs font-bold text-cyan-300 uppercase tracking-wide">
+                      4. Configurações de Autenticação, SSIDs & Dispositivos Autorizados (Auth Config)
+                    </h3>
+                  </div>
+                  <span className="text-[10px] text-slate-500 font-mono">Submenu: Config → Auth → Auth Config</span>
+                </div>
+
+                {/* IMAGEM 4: Galeria de Capturas de Auth Config (Tela Principal, Modal Auth Rules SSIDs & Modal Auth Device) */}
+                <div className="glass-card overflow-hidden border border-cyan-500/20">
+                  <div className="p-3.5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900/60">
+                    <div className="flex items-center gap-2">
+                      <Sliders className="w-4 h-4 text-cyan-400" />
+                      <span className="text-xs font-bold text-slate-200 uppercase tracking-wide">
+                        Capturas da Interface: Auth Config
+                      </span>
+                    </div>
+
+                    {/* Switcher Auth Config */}
+                    <div className="flex flex-wrap items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
+                      <button
+                        onClick={() => setShotView('auth-config')}
+                        className={`px-2.5 py-1 rounded text-xs font-medium flex items-center gap-1.5 transition-all ${
+                          shotView === 'auth-config' || (!['auth-rules', 'auth-device'].includes(shotView) && shotView.startsWith('auth-'))
+                            ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-semibold'
+                            : 'text-slate-400 hover:text-slate-200'
+                        }`}
+                      >
+                        <Sliders className="w-3.5 h-3.5" />
+                        Auth Config (Toggles & Página)
+                      </button>
+
+                      <button
+                        onClick={() => setShotView('auth-rules')}
+                        className={`px-2.5 py-1 rounded text-xs font-medium flex items-center gap-1.5 transition-all ${
+                          shotView === 'auth-rules'
+                            ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-semibold'
+                            : 'text-slate-400 hover:text-slate-200'
+                        }`}
+                      >
+                        <Layers className="w-3.5 h-3.5" />
+                        Modal Auth Rules (SSIDs)
+                      </button>
+
+                      <button
+                        onClick={() => setShotView('auth-device')}
+                        className={`px-2.5 py-1 rounded text-xs font-medium flex items-center gap-1.5 transition-all ${
+                          shotView === 'auth-device'
+                            ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-semibold'
+                            : 'text-slate-400 hover:text-slate-200'
+                        }`}
+                      >
+                        <Boxes className="w-3.5 h-3.5" />
+                        Modal Auth Device
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Container da Imagem 4 */}
+                  {(() => {
+                    const authTab = (shotView === 'auth-rules' || shotView === 'auth-device') ? shotView : 'auth-config';
+                    const shot = getImageDetails(authTab);
+                    return (
+                      <div className="p-4 bg-slate-950 flex flex-col items-center justify-center">
+                        <div 
+                          onClick={() => openImage(shot.url, `${vendor?.name ?? 'Yunlink'} — ${shot.label}`)}
+                          className="relative group w-full max-w-4xl overflow-hidden rounded-xl border border-slate-800 shadow-2xl bg-slate-900 cursor-zoom-in"
+                        >
+                          <img 
+                            src={shot.url} 
+                            alt={shot.label}
+                            className="w-full h-auto object-contain max-h-[500px] transition-transform duration-300 group-hover:scale-[1.01]"
+                          />
+                          <div className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded border border-slate-800 text-[10px] text-cyan-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                            🔍 Clique para Ampliar (Zoom Fullscreen)
+                          </div>
+                          <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded border border-slate-800 text-[10px] text-slate-300 font-mono">
+                            {shot.desc}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
+
+                  <div className="p-3 border-t border-slate-800/80 bg-slate-900/30 flex items-center justify-between text-[11px] text-slate-400">
+                    <span className="flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                      Auditado ao vivo em ruike-cloud.com → Config → Auth → Auth Config
+                    </span>
+                    <span className="text-cyan-400 font-mono font-medium">
+                      {shotView === 'auth-rules' ? 'Modal Auth Rules (Seleção de SSIDs)' : shotView === 'auth-device' ? 'Modal Auth Device (Adição de Dispositivos)' : 'Tela Principal Auth Config'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Alerta de Ausência de Gateway SMS */}
+                <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium flex items-start gap-2.5 shadow-sm">
+                  <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <span className="font-bold text-amber-200 block">⚠️ Ausência de Configuração de Gateway SMS</span>
+                    <p className="text-[11px] text-amber-300/90 leading-relaxed">
+                      Não existe nenhuma tela ou menu de configuração de provedor/gateway SMS no painel da plataforma Yunlink. Embora o método SMS seja exibido como opção no construtor visual do portal captivo, a funcionalidade de envio de mensagens de texto não pode ser configurada ou vinculada a uma API de gateway SMS nesta versão.
+                    </p>
+                  </div>
+                </div>
+
+                {/* CONFIGURAÇÃO 4: Opções de Auth Config */}
+                <div className="glass-card p-5 space-y-4">
+                  <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wide flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                    Opções de Configuração — Métodos Habilitados, SSIDs & Dispositivos (Auth Config)
+                  </h4>
+                  <div className="flex flex-col gap-2.5">
+                    {authConfigItems.map((item, idx) => (
+                      <div key={idx} className="py-1.5 flex items-start gap-3 text-xs text-slate-200 leading-relaxed border-b border-slate-800/40 last:border-0">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <div>{item.replace(/^•\s*/, '')}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
           </>
         );
       })()}
