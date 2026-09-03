@@ -198,7 +198,15 @@ export const getTopics = (lang: 'en' | 'pt'): TopicDefinition[] => {
                 '• Validade de Autenticação (Validity Auth): Opções de expiração do acesso incluindo 1 Dia (One Day), 2 Dias, 3 Dias, 4 Dias, 5 Dias, 6 Dias, 7 Dias ou Acesso Permanente (Permanent).',
                 '• Regras de White List (Lista Permitida): Filtro por IP ou MAC com suporte a múltiplos endereços separados por vírgula (",").',
                 '• Regras de Black List (Lista Bloqueada): Filtro por IP ou MAC com suporte a múltiplos endereços separados por vírgula (",").',
-                '• Gerenciamento & Exclusão em Lote (Strategy Management): Tabela com busca, adição unitária e botão Batch Delete para exclusão em massa.'
+                '• Gerenciamento & Exclusão em Lote (Strategy Management): Tabela com busca, adição unitária e botão Batch Delete para exclusão em massa.',
+                '---',
+                '📌 Configurações de Autenticação (Auth Config):',
+                '• Métodos disponíveis na tela Auth Config: "One Click" (toggle habilitado/azul) e "Member" (toggle desabilitado/cinza). O SMS NÃO aparece como toggle nesta tela.',
+                '⚠️ Ausência de Configuração de Gateway SMS: Não existe nenhuma tela ou menu de configuração de provedor/gateway SMS no painel. O método SMS é listado no portal visual, mas não pode ser configurado.',
+                '• Auth page config: Dropdown "Auth page" (valor padrão: Default), Dropdown "Strategy" (vincula uma estratégia de acesso), Dropdown "Language" (valor exibido: English). Botão Save salva as configurações.',
+                '• Botão Auth Range → Modal "Auth Rules": Abre checklist com todos os SSIDs do projeto para definir em quais redes a autenticação será aplicada. SSIDs confirmados: wireless, SSID1, SSID2, test1017. Botão OK confirma; X fecha sem salvar.',
+                '• Botão Auth Device → Modal "Auth Device": Abas "Add Devices" e "Auth Device 0 Units". Tabela com colunas: Device serial number, Name, Type, IP, MAC, Config. Estado vazio exibe ilustração de roteador Wi-Fi com mensagem "Please select the button in the upper left corner to add the device". Propósito: vincular dispositivos específicos ao contexto do portal captivo (possivelmente whitelist baseada em hardware). Nenhum dispositivo vinculado no ambiente auditado (Total 0).',
+                '• Botão Delete All: Remove todos os vínculos de configuração de auth do projeto.'
               ]
             : [
                 'Carousel Banners: Configures exactly 3 carousel banner images on the main page (Before Auth). No option available for a single fixed static image without carousel rotation.',
@@ -217,7 +225,15 @@ export const getTopics = (lang: 'en' | 'pt'): TopicDefinition[] => {
                 '• Authentication Validity (Validity Auth): Expiration controls including One Day, Two Day, Three Day, Four Day, Five Day, Six Day, Seven Day, or Permanent access.',
                 '• White List Rules (Allowed List): Selectable filter mode by IP or MAC address with multiple entry support separated by commas (",").',
                 '• Black List Rules (Blocked List): Selectable filter mode by IP or MAC address with multiple entry support separated by commas (",").',
-                '• Management & Bulk Deletion (Strategy Management): Table view with strategy name search, individual edit controls, and "Batch Delete" button for bulk rule removal.'
+                '• Management & Bulk Deletion (Strategy Management): Table view with strategy name search, individual edit controls, and "Batch Delete" button for bulk rule removal.',
+                '---',
+                '📌 Authentication Configuration (Auth Config):',
+                '• Methods available on the Auth Config screen: "One Click" (toggle enabled/blue) and "Member" (toggle disabled/grey). SMS does NOT appear as a toggle on this screen.',
+                '⚠️ Absence of SMS Gateway Configuration: There is no SMS provider/gateway configuration screen anywhere in the panel. The SMS method is listed in the visual portal builder, but cannot be configured.',
+                '• Auth page config: "Auth page" dropdown (default value: Default), "Strategy" dropdown (links an access strategy), "Language" dropdown (shown value: English). Save button commits the settings.',
+                '• Auth Range button → "Auth Rules" modal: Opens a checklist of all project SSIDs to define which networks the auth config applies to. Confirmed SSIDs: wireless, SSID1, SSID2, test1017. OK confirms; X closes without saving.',
+                '• Auth Device button → "Auth Device" modal: Tabs "Add Devices" and "Auth Device 0 Units". Table columns: Device serial number, Name, Type, IP, MAC, Config. Empty state shows a Wi-Fi router illustration with message "Please select the button in the upper left corner to add the device". Purpose: bind specific devices to the captive portal context (likely hardware-based whitelisting). No devices bound in the audited environment (Total 0).',
+                '• Delete All button: Removes all auth configuration bindings from the project.'
               ]
         },
         ...pendingOtherVendors({ pt: 'Controle de Acesso de Visitantes (Captive Portal)', en: 'Guest Access Control (Captive Portal)' })
